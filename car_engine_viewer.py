@@ -52,6 +52,10 @@ class GLBViewer(QOpenGLWidget):
             
             # Debug: Print the number of vertices and faces
             print(f"Loaded {len(self.vertices)} vertices and {len(self.faces)} faces.")
+            if len(self.vertices) == 0 or len(self.faces) == 0:
+                print("Error: The mesh contains no vertices or faces. Check the .glb file.")
+                return
+            
             print(f"First 5 vertices: {self.vertices[:5]}")  # Print first 5 vertices
             print(f"First 5 faces: {self.faces[:5]}")       # Print first 5 faces
             
@@ -93,10 +97,24 @@ class GLBViewer(QOpenGLWidget):
         glRotatef(self.rotation_z, 0, 0, 1)  # Rotate around Z-axis
 
         # Draw the mesh
+        if len(self.vertices) == 0 or len(self.faces) == 0:
+            print("No geometry to render. Drawing a test triangle instead.")
+            self.draw_test_triangle()
+            return
+
         glBegin(GL_TRIANGLES)
         for face in self.faces:
             for vertex_index in face:
                 glVertex3fv(self.vertices[vertex_index])
+        glEnd()
+
+    def draw_test_triangle(self):
+        # Draw a simple red triangle for testing OpenGL rendering
+        glBegin(GL_TRIANGLES)
+        glColor3f(1.0, 0.0, 0.0)  # Red
+        glVertex3f(-1.0, -1.0, 0.0)
+        glVertex3f(1.0, -1.0, 0.0)
+        glVertex3f(0.0, 1.0, 0.0)
         glEnd()
 
     def keyPressEvent(self, event):
