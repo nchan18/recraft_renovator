@@ -81,5 +81,5 @@ def display_image(image, title='Image'):
 
 # image file path
 dir = os.getcwd()
-image_path = os.path.join(dir, '3D_Image.png')
+image_path = os.path.join(dir, 'New_Model.png')
 main(image_path)
