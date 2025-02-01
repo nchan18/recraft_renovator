@@ -112,7 +112,9 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Path to your .ply file
-    ply_file = r"C:\Users\chara\Downloads\recrafter renovater\Car engine.ply"
+    #get working directory
+    dir = os.getcwd()
+    ply_file = os.path.join(dir, "house.ply")
 
     # Create the main window
     viewer = PLYViewer(ply_file)
