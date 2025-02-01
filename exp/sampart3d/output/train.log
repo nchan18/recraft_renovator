@@ -1,0 +1,1185 @@
+[2025-02-01 21:25:35,856 INFO train.py line 133 1362] => Loading config ...
+[2025-02-01 21:25:35,856 INFO train.py line 135 1362] Save path: exp/sampart3d/output
+[2025-02-01 21:25:36,028 INFO train.py line 136 1362] Config:
+weight = None
+resume = False
+evaluate = True
+test_only = False
+seed = 35611892
+save_path = 'exp/sampart3d/output'
+num_worker = 1
+batch_size = 1
+batch_size_val = None
+batch_size_test = None
+epoch = 5000
+eval_epoch = 5000
+sync_bn = False
+enable_amp = True
+empty_cache = False
+find_unused_parameters = False
+mix_prob = 0
+param_dicts = None
+hooks = [
+    dict(type='CheckpointLoader'),
+    dict(type='IterationTimer', warmup_iter=2),
+    dict(type='InformationWriter'),
+    dict(type='CheckpointSaver', save_freq=None)
+]
+train = dict(type='DefaultTrainer')
+test = dict(type='SemSegTester', verbose=True)
+model = dict(
+    type='SAMPart3D',
+    backbone_dim=384,
+    output_dim=384,
+    pcd_feat_dim=9,
+    freeze_backbone=True,
+    max_grouping_scale=2,
+    use_hierarchy_losses=True,
+    backbone=dict(
+        type='PTv3-obj',
+        in_channels=9,
+        order=['z', 'z-trans', 'hilbert', 'hilbert-trans'],
+        stride=(),
+        enc_depths=(3, 3, 3, 6, 16),
+        enc_channels=(32, 64, 128, 256, 384),
+        enc_num_head=(2, 4, 8, 16, 24),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.0,
+        shuffle_orders=False,
+        pre_norm=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False))
+optimizer = dict(type='AdamW', lr=0.0001, weight_decay=1e-08)
+scheduler = dict(
+    type='OneCycleLR',
+    max_lr=[0.0001],
+    pct_start=0.1,
+    anneal_strategy='cos',
+    div_factor=10.0,
+    final_div_factor=10.0)
+dataset_type = 'SAMPart3DDataset16Views'
+data_root = ''
+mesh_root = ''
+backbone_weight_path = ''
+val_scales_list = [0.0, 0.5, 1.0, 1.5, 2.0]
+mesh_voting = True
+data = dict(
+    train=dict(
+        type='SAMPart3DDataset16Views',
+        split='train',
+        data_root='',
+        mesh_root='',
+        sample_num=15000,
+        pixels_per_image=256,
+        batch_size=90,
+        extent_scale=10.0,
+        transform=[
+            dict(type='NormalizeCoord'),
+            dict(type='CenterShift', apply_z=True),
+            dict(
+                type='GridSample',
+                grid_size=0.01,
+                keys=('coord', 'color', 'normal', 'origin_coord',
+                      'face_index'),
+                hash_type='fnv',
+                mode='train',
+                return_grid_coord=True,
+                return_inverse=True),
+            dict(type='CenterShift', apply_z=False),
+            dict(type='NormalizeColor'),
+            dict(type='ToTensor'),
+            dict(
+                type='Collect',
+                keys=('coord', 'grid_coord', 'inverse', 'origin_coord',
+                      'face_index'),
+                feat_keys=('coord', 'normal', 'color'))
+        ],
+        loop=1))
+oid = 'rr/2_1_2025'
+label = 'None'
+num_worker_per_gpu = 1
+batch_size_per_gpu = 1
+batch_size_val_per_gpu = 1
+batch_size_test_per_gpu = 1
+
+[2025-02-01 21:25:36,028 INFO train.py line 137 1362] => Building model ...
+[2025-02-01 21:25:36,675 INFO train.py line 425 1362] Num params: 1634304
+[2025-02-01 21:25:36,762 INFO train.py line 139 1362] => Building writer ...
+[2025-02-01 21:25:36,763 INFO train.py line 435 1362] Tensorboard writer logging dir: exp/sampart3d/output
+[2025-02-01 21:25:36,764 INFO train.py line 141 1362] => Building train dataset & dataloader ...
+[2025-02-01 21:28:16,357 INFO train.py line 133 2176] => Loading config ...
+[2025-02-01 21:28:16,357 INFO train.py line 135 2176] Save path: exp/sampart3d/output
+[2025-02-01 21:28:16,531 INFO train.py line 136 2176] Config:
+weight = None
+resume = False
+evaluate = True
+test_only = False
+seed = 16054847
+save_path = 'exp/sampart3d/output'
+num_worker = 1
+batch_size = 1
+batch_size_val = None
+batch_size_test = None
+epoch = 5000
+eval_epoch = 5000
+sync_bn = False
+enable_amp = True
+empty_cache = False
+find_unused_parameters = False
+mix_prob = 0
+param_dicts = None
+hooks = [
+    dict(type='CheckpointLoader'),
+    dict(type='IterationTimer', warmup_iter=2),
+    dict(type='InformationWriter'),
+    dict(type='CheckpointSaver', save_freq=None)
+]
+train = dict(type='DefaultTrainer')
+test = dict(type='SemSegTester', verbose=True)
+model = dict(
+    type='SAMPart3D',
+    backbone_dim=384,
+    output_dim=384,
+    pcd_feat_dim=9,
+    freeze_backbone=True,
+    max_grouping_scale=2,
+    use_hierarchy_losses=True,
+    backbone=dict(
+        type='PTv3-obj',
+        in_channels=9,
+        order=['z', 'z-trans', 'hilbert', 'hilbert-trans'],
+        stride=(),
+        enc_depths=(3, 3, 3, 6, 16),
+        enc_channels=(32, 64, 128, 256, 384),
+        enc_num_head=(2, 4, 8, 16, 24),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.0,
+        shuffle_orders=False,
+        pre_norm=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False))
+optimizer = dict(type='AdamW', lr=0.0001, weight_decay=1e-08)
+scheduler = dict(
+    type='OneCycleLR',
+    max_lr=[0.0001],
+    pct_start=0.1,
+    anneal_strategy='cos',
+    div_factor=10.0,
+    final_div_factor=10.0)
+dataset_type = 'SAMPart3DDataset16Views'
+data_root = ''
+mesh_root = ''
+backbone_weight_path = ''
+val_scales_list = [0.0, 0.5, 1.0, 1.5, 2.0]
+mesh_voting = True
+data = dict(
+    train=dict(
+        type='SAMPart3DDataset16Views',
+        split='train',
+        data_root='',
+        mesh_root='',
+        sample_num=15000,
+        pixels_per_image=256,
+        batch_size=90,
+        extent_scale=10.0,
+        transform=[
+            dict(type='NormalizeCoord'),
+            dict(type='CenterShift', apply_z=True),
+            dict(
+                type='GridSample',
+                grid_size=0.01,
+                keys=('coord', 'color', 'normal', 'origin_coord',
+                      'face_index'),
+                hash_type='fnv',
+                mode='train',
+                return_grid_coord=True,
+                return_inverse=True),
+            dict(type='CenterShift', apply_z=False),
+            dict(type='NormalizeColor'),
+            dict(type='ToTensor'),
+            dict(
+                type='Collect',
+                keys=('coord', 'grid_coord', 'inverse', 'origin_coord',
+                      'face_index'),
+                feat_keys=('coord', 'normal', 'color'))
+        ],
+        loop=1))
+oid = 'rr/2_1_2025'
+label = 'None'
+num_worker_per_gpu = 1
+batch_size_per_gpu = 1
+batch_size_val_per_gpu = 1
+batch_size_test_per_gpu = 1
+
+[2025-02-01 21:28:16,531 INFO train.py line 137 2176] => Building model ...
+[2025-02-01 21:28:17,168 INFO train.py line 425 2176] Num params: 1634304
+[2025-02-01 21:28:17,250 INFO train.py line 139 2176] => Building writer ...
+[2025-02-01 21:28:17,252 INFO train.py line 435 2176] Tensorboard writer logging dir: exp/sampart3d/output
+[2025-02-01 21:28:17,252 INFO train.py line 141 2176] => Building train dataset & dataloader ...
+[2025-02-01 21:33:18,969 INFO dataset_render_16views.py line 145 2176] Processing frame_0
+[2025-02-01 21:33:24,052 INFO dataset_render_16views.py line 145 2176] Processing frame_1
+[2025-02-01 21:33:28,787 INFO dataset_render_16views.py line 145 2176] Processing frame_2
+[2025-02-01 21:33:32,961 INFO dataset_render_16views.py line 145 2176] Processing frame_3
+[2025-02-01 21:33:37,334 INFO dataset_render_16views.py line 145 2176] Processing frame_4
+[2025-02-01 21:33:42,191 INFO dataset_render_16views.py line 145 2176] Processing frame_5
+[2025-02-01 21:33:46,652 INFO dataset_render_16views.py line 145 2176] Processing frame_6
+[2025-02-01 21:33:50,868 INFO dataset_render_16views.py line 145 2176] Processing frame_7
+[2025-02-01 21:33:55,602 INFO dataset_render_16views.py line 145 2176] Processing frame_8
+[2025-02-01 21:34:00,169 INFO dataset_render_16views.py line 145 2176] Processing frame_9
+[2025-02-01 21:34:04,915 INFO dataset_render_16views.py line 145 2176] Processing frame_10
+[2025-02-01 21:34:08,970 INFO dataset_render_16views.py line 145 2176] Processing frame_11
+[2025-02-01 21:34:13,390 INFO dataset_render_16views.py line 145 2176] Processing frame_12
+[2025-02-01 21:34:18,214 INFO dataset_render_16views.py line 145 2176] Processing frame_13
+[2025-02-01 21:34:22,763 INFO dataset_render_16views.py line 145 2176] Processing frame_14
+[2025-02-01 21:34:26,984 INFO dataset_render_16views.py line 145 2176] Processing frame_15
+[2025-02-01 21:34:31,796 INFO dataset_render_16views.py line 69 2176] Totally 16 x 1 samples in train set.
+[2025-02-01 21:34:31,796 INFO train.py line 145 2176] => Building optimize, scheduler, scaler(amp) ...
+[2025-02-01 21:34:31,798 INFO optimizer.py line 64 2176] Params Group 1 - lr: 0.0001; Params: ['instance_net.params', 'pos_net.params'].
+[2025-02-01 21:34:31,799 INFO train.py line 149 2176] => Building hooks ...
+[2025-02-01 21:34:31,802 INFO train.py line 166 2176] >>>>>>>>>>>>>>>> Start Training >>>>>>>>>>>>>>>>
+[2025-02-01 21:34:31,803 INFO train.py line 171 2176] => Loading checkpoint & weight ...
+[2025-02-01 21:34:31,803 INFO train.py line 194 2176] No weight found at: 
+[2025-02-01 21:35:18,826 INFO train.py line 133 2265] => Loading config ...
+[2025-02-01 21:35:18,826 INFO train.py line 135 2265] Save path: exp/sampart3d/output
+[2025-02-01 21:35:18,969 INFO train.py line 136 2265] Config:
+weight = None
+resume = False
+evaluate = True
+test_only = False
+seed = 18573925
+save_path = 'exp/sampart3d/output'
+num_worker = 1
+batch_size = 1
+batch_size_val = None
+batch_size_test = None
+epoch = 5000
+eval_epoch = 5000
+sync_bn = False
+enable_amp = True
+empty_cache = False
+find_unused_parameters = False
+mix_prob = 0
+param_dicts = None
+hooks = [
+    dict(type='CheckpointLoader'),
+    dict(type='IterationTimer', warmup_iter=2),
+    dict(type='InformationWriter'),
+    dict(type='CheckpointSaver', save_freq=None)
+]
+train = dict(type='DefaultTrainer')
+test = dict(type='SemSegTester', verbose=True)
+model = dict(
+    type='SAMPart3D',
+    backbone_dim=384,
+    output_dim=384,
+    pcd_feat_dim=9,
+    freeze_backbone=True,
+    max_grouping_scale=2,
+    use_hierarchy_losses=True,
+    backbone=dict(
+        type='PTv3-obj',
+        in_channels=9,
+        order=['z', 'z-trans', 'hilbert', 'hilbert-trans'],
+        stride=(),
+        enc_depths=(3, 3, 3, 6, 16),
+        enc_channels=(32, 64, 128, 256, 384),
+        enc_num_head=(2, 4, 8, 16, 24),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.0,
+        shuffle_orders=False,
+        pre_norm=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False))
+optimizer = dict(type='AdamW', lr=0.0001, weight_decay=1e-08)
+scheduler = dict(
+    type='OneCycleLR',
+    max_lr=[0.0001],
+    pct_start=0.1,
+    anneal_strategy='cos',
+    div_factor=10.0,
+    final_div_factor=10.0)
+dataset_type = 'SAMPart3DDataset16Views'
+data_root = ''
+mesh_root = ''
+backbone_weight_path = ''
+val_scales_list = [0.0, 0.5, 1.0, 1.5, 2.0]
+mesh_voting = True
+data = dict(
+    train=dict(
+        type='SAMPart3DDataset16Views',
+        split='train',
+        data_root='',
+        mesh_root='',
+        sample_num=15000,
+        pixels_per_image=256,
+        batch_size=90,
+        extent_scale=10.0,
+        transform=[
+            dict(type='NormalizeCoord'),
+            dict(type='CenterShift', apply_z=True),
+            dict(
+                type='GridSample',
+                grid_size=0.01,
+                keys=('coord', 'color', 'normal', 'origin_coord',
+                      'face_index'),
+                hash_type='fnv',
+                mode='train',
+                return_grid_coord=True,
+                return_inverse=True),
+            dict(type='CenterShift', apply_z=False),
+            dict(type='NormalizeColor'),
+            dict(type='ToTensor'),
+            dict(
+                type='Collect',
+                keys=('coord', 'grid_coord', 'inverse', 'origin_coord',
+                      'face_index'),
+                feat_keys=('coord', 'normal', 'color'))
+        ],
+        loop=1))
+oid = 'rr/2_1_2025'
+label = 'None'
+num_worker_per_gpu = 1
+batch_size_per_gpu = 1
+batch_size_val_per_gpu = 1
+batch_size_test_per_gpu = 1
+
+[2025-02-01 21:35:18,969 INFO train.py line 137 2265] => Building model ...
+[2025-02-01 21:35:19,548 INFO train.py line 425 2265] Num params: 1634304
+[2025-02-01 21:35:19,626 INFO train.py line 139 2265] => Building writer ...
+[2025-02-01 21:35:19,627 INFO train.py line 435 2265] Tensorboard writer logging dir: exp/sampart3d/output
+[2025-02-01 21:35:19,627 INFO train.py line 141 2265] => Building train dataset & dataloader ...
+[2025-02-01 21:35:20,613 INFO dataset_render_16views.py line 145 2265] Processing frame_0
+[2025-02-01 21:35:25,619 INFO dataset_render_16views.py line 145 2265] Processing frame_1
+[2025-02-01 21:35:30,388 INFO dataset_render_16views.py line 145 2265] Processing frame_2
+[2025-02-01 21:35:34,596 INFO dataset_render_16views.py line 145 2265] Processing frame_3
+[2025-02-01 21:35:38,918 INFO dataset_render_16views.py line 145 2265] Processing frame_4
+[2025-02-01 21:35:43,728 INFO dataset_render_16views.py line 145 2265] Processing frame_5
+[2025-02-01 21:35:48,318 INFO dataset_render_16views.py line 145 2265] Processing frame_6
+[2025-02-01 21:35:52,537 INFO dataset_render_16views.py line 145 2265] Processing frame_7
+[2025-02-01 21:35:57,218 INFO dataset_render_16views.py line 145 2265] Processing frame_8
+[2025-02-01 21:36:01,744 INFO dataset_render_16views.py line 145 2265] Processing frame_9
+[2025-02-01 21:36:06,482 INFO dataset_render_16views.py line 145 2265] Processing frame_10
+[2025-02-01 21:36:10,539 INFO dataset_render_16views.py line 145 2265] Processing frame_11
+[2025-02-01 21:36:15,051 INFO dataset_render_16views.py line 145 2265] Processing frame_12
+[2025-02-01 21:36:19,993 INFO dataset_render_16views.py line 145 2265] Processing frame_13
+[2025-02-01 21:36:24,651 INFO dataset_render_16views.py line 145 2265] Processing frame_14
+[2025-02-01 21:36:28,708 INFO dataset_render_16views.py line 145 2265] Processing frame_15
+[2025-02-01 21:36:33,611 INFO dataset_render_16views.py line 69 2265] Totally 16 x 1 samples in train set.
+[2025-02-01 21:36:33,611 INFO train.py line 145 2265] => Building optimize, scheduler, scaler(amp) ...
+[2025-02-01 21:36:33,613 INFO optimizer.py line 64 2265] Params Group 1 - lr: 0.0001; Params: ['instance_net.params', 'pos_net.params'].
+[2025-02-01 21:36:33,614 INFO train.py line 149 2265] => Building hooks ...
+[2025-02-01 21:36:33,616 INFO train.py line 166 2265] >>>>>>>>>>>>>>>> Start Training >>>>>>>>>>>>>>>>
+[2025-02-01 21:36:33,617 INFO train.py line 171 2265] => Loading checkpoint & weight ...
+[2025-02-01 21:36:33,617 INFO train.py line 194 2265] No weight found at: 
+[2025-02-01 21:39:09,787 INFO train.py line 133 2353] => Loading config ...
+[2025-02-01 21:39:09,787 INFO train.py line 135 2353] Save path: exp/sampart3d/output
+[2025-02-01 21:39:09,918 INFO train.py line 136 2353] Config:
+weight = None
+resume = False
+evaluate = True
+test_only = False
+seed = 9576507
+save_path = 'exp/sampart3d/output'
+num_worker = 1
+batch_size = 1
+batch_size_val = None
+batch_size_test = None
+epoch = 5000
+eval_epoch = 5000
+sync_bn = False
+enable_amp = True
+empty_cache = False
+find_unused_parameters = False
+mix_prob = 0
+param_dicts = None
+hooks = [
+    dict(type='CheckpointLoader'),
+    dict(type='IterationTimer', warmup_iter=2),
+    dict(type='InformationWriter'),
+    dict(type='CheckpointSaver', save_freq=None)
+]
+train = dict(type='DefaultTrainer')
+test = dict(type='SemSegTester', verbose=True)
+model = dict(
+    type='SAMPart3D',
+    backbone_dim=384,
+    output_dim=384,
+    pcd_feat_dim=9,
+    freeze_backbone=True,
+    max_grouping_scale=2,
+    use_hierarchy_losses=True,
+    backbone=dict(
+        type='PTv3-obj',
+        in_channels=9,
+        order=['z', 'z-trans', 'hilbert', 'hilbert-trans'],
+        stride=(),
+        enc_depths=(3, 3, 3, 6, 16),
+        enc_channels=(32, 64, 128, 256, 384),
+        enc_num_head=(2, 4, 8, 16, 24),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.0,
+        shuffle_orders=False,
+        pre_norm=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False))
+optimizer = dict(type='AdamW', lr=0.0001, weight_decay=1e-08)
+scheduler = dict(
+    type='OneCycleLR',
+    max_lr=[0.0001],
+    pct_start=0.1,
+    anneal_strategy='cos',
+    div_factor=10.0,
+    final_div_factor=10.0)
+dataset_type = 'SAMPart3DDataset16Views'
+data_root = ''
+mesh_root = ''
+backbone_weight_path = ''
+val_scales_list = [0.0, 0.5, 1.0, 1.5, 2.0]
+mesh_voting = True
+data = dict(
+    train=dict(
+        type='SAMPart3DDataset16Views',
+        split='train',
+        data_root='',
+        mesh_root='',
+        sample_num=15000,
+        pixels_per_image=256,
+        batch_size=90,
+        extent_scale=10.0,
+        transform=[
+            dict(type='NormalizeCoord'),
+            dict(type='CenterShift', apply_z=True),
+            dict(
+                type='GridSample',
+                grid_size=0.01,
+                keys=('coord', 'color', 'normal', 'origin_coord',
+                      'face_index'),
+                hash_type='fnv',
+                mode='train',
+                return_grid_coord=True,
+                return_inverse=True),
+            dict(type='CenterShift', apply_z=False),
+            dict(type='NormalizeColor'),
+            dict(type='ToTensor'),
+            dict(
+                type='Collect',
+                keys=('coord', 'grid_coord', 'inverse', 'origin_coord',
+                      'face_index'),
+                feat_keys=('coord', 'normal', 'color'))
+        ],
+        loop=1))
+oid = 'rr/2_1_2025'
+label = 'None'
+num_worker_per_gpu = 1
+batch_size_per_gpu = 1
+batch_size_val_per_gpu = 1
+batch_size_test_per_gpu = 1
+
+[2025-02-01 21:39:09,918 INFO train.py line 137 2353] => Building model ...
+[2025-02-01 21:39:10,384 INFO train.py line 425 2353] Num params: 1634304
+[2025-02-01 21:39:10,460 INFO train.py line 139 2353] => Building writer ...
+[2025-02-01 21:39:10,461 INFO train.py line 435 2353] Tensorboard writer logging dir: exp/sampart3d/output
+[2025-02-01 21:39:10,461 INFO train.py line 141 2353] => Building train dataset & dataloader ...
+[2025-02-01 21:39:11,592 INFO dataset_render_16views.py line 145 2353] Processing frame_0
+[2025-02-01 21:39:16,359 INFO dataset_render_16views.py line 145 2353] Processing frame_1
+[2025-02-01 21:39:20,875 INFO dataset_render_16views.py line 145 2353] Processing frame_2
+[2025-02-01 21:39:24,926 INFO dataset_render_16views.py line 145 2353] Processing frame_3
+[2025-02-01 21:39:29,059 INFO dataset_render_16views.py line 145 2353] Processing frame_4
+[2025-02-01 21:39:33,612 INFO dataset_render_16views.py line 145 2353] Processing frame_5
+[2025-02-01 21:39:37,993 INFO dataset_render_16views.py line 145 2353] Processing frame_6
+[2025-02-01 21:39:42,070 INFO dataset_render_16views.py line 145 2353] Processing frame_7
+[2025-02-01 21:39:46,528 INFO dataset_render_16views.py line 145 2353] Processing frame_8
+[2025-02-01 21:39:50,867 INFO dataset_render_16views.py line 145 2353] Processing frame_9
+[2025-02-01 21:39:55,395 INFO dataset_render_16views.py line 145 2353] Processing frame_10
+[2025-02-01 21:39:59,292 INFO dataset_render_16views.py line 145 2353] Processing frame_11
+[2025-02-01 21:40:03,598 INFO dataset_render_16views.py line 145 2353] Processing frame_12
+[2025-02-01 21:40:08,230 INFO dataset_render_16views.py line 145 2353] Processing frame_13
+[2025-02-01 21:40:12,641 INFO dataset_render_16views.py line 145 2353] Processing frame_14
+[2025-02-01 21:40:16,546 INFO dataset_render_16views.py line 145 2353] Processing frame_15
+[2025-02-01 21:40:21,166 INFO dataset_render_16views.py line 69 2353] Totally 16 x 1 samples in train set.
+[2025-02-01 21:40:21,166 INFO train.py line 145 2353] => Building optimize, scheduler, scaler(amp) ...
+[2025-02-01 21:40:21,168 INFO optimizer.py line 64 2353] Params Group 1 - lr: 0.0001; Params: ['instance_net.params', 'pos_net.params'].
+[2025-02-01 21:40:21,169 INFO train.py line 149 2353] => Building hooks ...
+[2025-02-01 21:40:21,171 INFO train.py line 166 2353] >>>>>>>>>>>>>>>> Start Training >>>>>>>>>>>>>>>>
+[2025-02-01 21:40:21,171 INFO train.py line 171 2353] => Loading checkpoint & weight ...
+[2025-02-01 21:40:21,171 INFO train.py line 194 2353] No weight found at: 
+[2025-02-01 21:42:26,607 INFO train.py line 133 2443] => Loading config ...
+[2025-02-01 21:42:26,607 INFO train.py line 135 2443] Save path: exp/sampart3d/output
+[2025-02-01 21:42:26,739 INFO train.py line 136 2443] Config:
+weight = None
+resume = False
+evaluate = True
+test_only = False
+seed = 26378686
+save_path = 'exp/sampart3d/output'
+num_worker = 1
+batch_size = 1
+batch_size_val = None
+batch_size_test = None
+epoch = 5000
+eval_epoch = 5000
+sync_bn = False
+enable_amp = True
+empty_cache = False
+find_unused_parameters = False
+mix_prob = 0
+param_dicts = None
+hooks = [
+    dict(type='CheckpointLoader'),
+    dict(type='IterationTimer', warmup_iter=2),
+    dict(type='InformationWriter'),
+    dict(type='CheckpointSaver', save_freq=None)
+]
+train = dict(type='DefaultTrainer')
+test = dict(type='SemSegTester', verbose=True)
+model = dict(
+    type='SAMPart3D',
+    backbone_dim=384,
+    output_dim=384,
+    pcd_feat_dim=9,
+    freeze_backbone=True,
+    max_grouping_scale=2,
+    use_hierarchy_losses=True,
+    backbone=dict(
+        type='PTv3-obj',
+        in_channels=9,
+        order=['z', 'z-trans', 'hilbert', 'hilbert-trans'],
+        stride=(),
+        enc_depths=(3, 3, 3, 6, 16),
+        enc_channels=(32, 64, 128, 256, 384),
+        enc_num_head=(2, 4, 8, 16, 24),
+        enc_patch_size=(1024, 1024, 1024, 1024, 1024),
+        mlp_ratio=4,
+        qkv_bias=True,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+        drop_path=0.0,
+        shuffle_orders=False,
+        pre_norm=True,
+        enable_rpe=False,
+        enable_flash=True,
+        upcast_attention=False,
+        upcast_softmax=False,
+        cls_mode=False))
+optimizer = dict(type='AdamW', lr=0.0001, weight_decay=1e-08)
+scheduler = dict(
+    type='OneCycleLR',
+    max_lr=[0.0001],
+    pct_start=0.1,
+    anneal_strategy='cos',
+    div_factor=10.0,
+    final_div_factor=10.0)
+dataset_type = 'SAMPart3DDataset16Views'
+data_root = ''
+mesh_root = ''
+backbone_weight_path = ''
+val_scales_list = [0.0, 0.5, 1.0, 1.5, 2.0]
+mesh_voting = True
+data = dict(
+    train=dict(
+        type='SAMPart3DDataset16Views',
+        split='train',
+        data_root='',
+        mesh_root='',
+        sample_num=15000,
+        pixels_per_image=256,
+        batch_size=45,
+        extent_scale=10.0,
+        transform=[
+            dict(type='NormalizeCoord'),
+            dict(type='CenterShift', apply_z=True),
+            dict(
+                type='GridSample',
+                grid_size=0.01,
+                keys=('coord', 'color', 'normal', 'origin_coord',
+                      'face_index'),
+                hash_type='fnv',
+                mode='train',
+                return_grid_coord=True,
+                return_inverse=True),
+            dict(type='CenterShift', apply_z=False),
+            dict(type='NormalizeColor'),
+            dict(type='ToTensor'),
+            dict(
+                type='Collect',
+                keys=('coord', 'grid_coord', 'inverse', 'origin_coord',
+                      'face_index'),
+                feat_keys=('coord', 'normal', 'color'))
+        ],
+        loop=1))
+oid = 'rr/2_1_2025'
+label = 'None'
+num_worker_per_gpu = 1
+batch_size_per_gpu = 1
+batch_size_val_per_gpu = 1
+batch_size_test_per_gpu = 1
+
+[2025-02-01 21:42:26,739 INFO train.py line 137 2443] => Building model ...
+[2025-02-01 21:42:27,216 INFO train.py line 425 2443] Num params: 1634304
+[2025-02-01 21:42:27,291 INFO train.py line 139 2443] => Building writer ...
+[2025-02-01 21:42:27,292 INFO train.py line 435 2443] Tensorboard writer logging dir: exp/sampart3d/output
+[2025-02-01 21:42:27,292 INFO train.py line 141 2443] => Building train dataset & dataloader ...
+[2025-02-01 21:42:28,074 INFO dataset_render_16views.py line 145 2443] Processing frame_0
+[2025-02-01 21:42:32,878 INFO dataset_render_16views.py line 145 2443] Processing frame_1
+[2025-02-01 21:42:37,417 INFO dataset_render_16views.py line 145 2443] Processing frame_2
+[2025-02-01 21:42:41,450 INFO dataset_render_16views.py line 145 2443] Processing frame_3
+[2025-02-01 21:42:45,574 INFO dataset_render_16views.py line 145 2443] Processing frame_4
+[2025-02-01 21:42:50,090 INFO dataset_render_16views.py line 145 2443] Processing frame_5
+[2025-02-01 21:42:54,530 INFO dataset_render_16views.py line 145 2443] Processing frame_6
+[2025-02-01 21:42:58,534 INFO dataset_render_16views.py line 145 2443] Processing frame_7
+[2025-02-01 21:43:02,963 INFO dataset_render_16views.py line 145 2443] Processing frame_8
+[2025-02-01 21:43:07,296 INFO dataset_render_16views.py line 145 2443] Processing frame_9
+[2025-02-01 21:43:11,804 INFO dataset_render_16views.py line 145 2443] Processing frame_10
+[2025-02-01 21:43:15,671 INFO dataset_render_16views.py line 145 2443] Processing frame_11
+[2025-02-01 21:43:19,926 INFO dataset_render_16views.py line 145 2443] Processing frame_12
+[2025-02-01 21:43:24,506 INFO dataset_render_16views.py line 145 2443] Processing frame_13
+[2025-02-01 21:43:28,927 INFO dataset_render_16views.py line 145 2443] Processing frame_14
+[2025-02-01 21:43:32,854 INFO dataset_render_16views.py line 145 2443] Processing frame_15
+[2025-02-01 21:43:37,489 INFO dataset_render_16views.py line 69 2443] Totally 16 x 1 samples in train set.
+[2025-02-01 21:43:37,489 INFO train.py line 145 2443] => Building optimize, scheduler, scaler(amp) ...
+[2025-02-01 21:43:37,491 INFO optimizer.py line 64 2443] Params Group 1 - lr: 0.0001; Params: ['instance_net.params', 'pos_net.params'].
+[2025-02-01 21:43:37,492 INFO train.py line 149 2443] => Building hooks ...
+[2025-02-01 21:43:37,494 INFO train.py line 166 2443] >>>>>>>>>>>>>>>> Start Training >>>>>>>>>>>>>>>>
+[2025-02-01 21:43:37,494 INFO train.py line 171 2443] => Loading checkpoint & weight ...
+[2025-02-01 21:43:37,494 INFO train.py line 194 2443] No weight found at: 
+[2025-02-01 21:43:38,724 INFO train.py line 211 2443] iter: 0, total_loss: 0.4711368680000305, loss_1: 0.72021484375, loss_2: 0.7177734375, loss_3: 0.1943359375
+[2025-02-01 21:43:40,197 INFO train.py line 211 2443] iter: 10, total_loss: 0.4209613502025604, loss_1: 0.7412109375, loss_2: 0.7255859375, loss_3: 0.1533203125
+[2025-02-01 21:43:41,429 INFO train.py line 211 2443] iter: 20, total_loss: 0.4708666205406189, loss_1: 0.7353515625, loss_2: 0.75537109375, loss_3: 0.227294921875
+[2025-02-01 21:43:42,639 INFO train.py line 211 2443] iter: 30, total_loss: 0.39619648456573486, loss_1: 0.79931640625, loss_2: 0.79736328125, loss_3: 0.07867431640625
+[2025-02-01 21:43:43,865 INFO train.py line 211 2443] iter: 40, total_loss: 0.3637298345565796, loss_1: 0.8095703125, loss_2: 0.7978515625, loss_3: 0.075439453125
+[2025-02-01 21:43:45,095 INFO train.py line 211 2443] iter: 50, total_loss: 0.39113616943359375, loss_1: 0.859375, loss_2: 0.84619140625, loss_3: 0.052093505859375
+[2025-02-01 21:43:46,330 INFO train.py line 211 2443] iter: 60, total_loss: 0.33705854415893555, loss_1: 0.76025390625, loss_2: 0.74609375, loss_3: 0.0826416015625
+[2025-02-01 21:43:47,536 INFO train.py line 211 2443] iter: 70, total_loss: 0.3476731777191162, loss_1: 0.82861328125, loss_2: 0.7197265625, loss_3: 0.0888671875
+[2025-02-01 21:43:48,731 INFO train.py line 211 2443] iter: 80, total_loss: 0.6431402564048767, loss_1: 0.84423828125, loss_2: 0.7294921875, loss_3: 0.04058837890625
+[2025-02-01 21:43:49,982 INFO train.py line 211 2443] iter: 90, total_loss: 0.3126527667045593, loss_1: 0.6796875, loss_2: 0.59521484375, loss_3: 0.053802490234375
+[2025-02-01 21:43:51,198 INFO train.py line 211 2443] iter: 100, total_loss: 0.35016244649887085, loss_1: 0.72900390625, loss_2: 0.548828125, loss_3: 0.083740234375
+[2025-02-01 21:43:52,413 INFO train.py line 211 2443] iter: 110, total_loss: 0.24565774202346802, loss_1: 0.50927734375, loss_2: 0.5087890625, loss_3: 0.09417724609375
+[2025-02-01 21:43:53,626 INFO train.py line 211 2443] iter: 120, total_loss: 0.24524615705013275, loss_1: 0.4970703125, loss_2: 0.489501953125, loss_3: 0.0643310546875
+[2025-02-01 21:43:54,854 INFO train.py line 211 2443] iter: 130, total_loss: 0.2812862992286682, loss_1: 0.689453125, loss_2: 0.42919921875, loss_3: 0.08837890625
+[2025-02-01 21:43:56,085 INFO train.py line 211 2443] iter: 140, total_loss: 0.2234712839126587, loss_1: 0.4833984375, loss_2: 0.343505859375, loss_3: 0.0733642578125
+[2025-02-01 21:43:57,319 INFO train.py line 211 2443] iter: 150, total_loss: 0.2339576780796051, loss_1: 0.31689453125, loss_2: 0.248046875, loss_3: 0.11285400390625
+[2025-02-01 21:43:58,530 INFO train.py line 211 2443] iter: 160, total_loss: 0.1956501454114914, loss_1: 0.541015625, loss_2: 0.2265625, loss_3: 0.058624267578125
+[2025-02-01 21:43:59,774 INFO train.py line 211 2443] iter: 170, total_loss: 0.1887698620557785, loss_1: 0.339599609375, loss_2: 0.333251953125, loss_3: 0.07818603515625
+[2025-02-01 21:44:01,038 INFO train.py line 211 2443] iter: 180, total_loss: 0.22567470371723175, loss_1: 0.53955078125, loss_2: 0.49462890625, loss_3: 0.050567626953125
+[2025-02-01 21:44:02,269 INFO train.py line 211 2443] iter: 190, total_loss: 0.22171829640865326, loss_1: 0.53369140625, loss_2: 0.156005859375, loss_3: 0.1151123046875
+[2025-02-01 21:44:03,583 INFO train.py line 211 2443] iter: 200, total_loss: 0.17936739325523376, loss_1: 0.1949462890625, loss_2: 0.12384033203125, loss_3: 0.1458740234375
+[2025-02-01 21:44:04,804 INFO train.py line 211 2443] iter: 210, total_loss: 0.24263980984687805, loss_1: 0.4091796875, loss_2: 0.13720703125, loss_3: 0.03790283203125
+[2025-02-01 21:44:06,010 INFO train.py line 211 2443] iter: 220, total_loss: 0.27652403712272644, loss_1: 0.71044921875, loss_2: 0.418212890625, loss_3: 0.046173095703125
+[2025-02-01 21:44:07,229 INFO train.py line 211 2443] iter: 230, total_loss: 0.43153324723243713, loss_1: 0.84716796875, loss_2: 0.11834716796875, loss_3: 0.03240966796875
+[2025-02-01 21:44:08,470 INFO train.py line 211 2443] iter: 240, total_loss: 0.17354099452495575, loss_1: 0.1781005859375, loss_2: 0.1549072265625, loss_3: 0.10589599609375
+[2025-02-01 21:44:09,698 INFO train.py line 211 2443] iter: 250, total_loss: 0.11282436549663544, loss_1: 0.17724609375, loss_2: 0.1011962890625, loss_3: 0.083984375
+[2025-02-01 21:44:10,905 INFO train.py line 211 2443] iter: 260, total_loss: 0.16850656270980835, loss_1: 0.147705078125, loss_2: 0.09393310546875, loss_3: 0.145751953125
+[2025-02-01 21:44:12,132 INFO train.py line 211 2443] iter: 270, total_loss: 0.10610896348953247, loss_1: 0.188720703125, loss_2: 0.06378173828125, loss_3: 0.07122802734375
+[2025-02-01 21:44:13,348 INFO train.py line 211 2443] iter: 280, total_loss: 0.2508287727832794, loss_1: 0.5986328125, loss_2: 0.06756591796875, loss_3: 0.02703857421875
+[2025-02-01 21:44:14,578 INFO train.py line 211 2443] iter: 290, total_loss: 0.1518486887216568, loss_1: 0.2095947265625, loss_2: 0.11187744140625, loss_3: 0.06439208984375
+[2025-02-01 21:44:15,799 INFO train.py line 211 2443] iter: 300, total_loss: 0.13440875709056854, loss_1: 0.117919921875, loss_2: 0.04931640625, loss_3: 0.12548828125
+[2025-02-01 21:44:17,027 INFO train.py line 211 2443] iter: 310, total_loss: 0.1699221432209015, loss_1: 0.135986328125, loss_2: 0.124755859375, loss_3: 0.150634765625
+[2025-02-01 21:44:18,264 INFO train.py line 211 2443] iter: 320, total_loss: 0.1235337182879448, loss_1: 0.18359375, loss_2: 0.08331298828125, loss_3: 0.07196044921875
+[2025-02-01 21:44:19,506 INFO train.py line 211 2443] iter: 330, total_loss: 0.08947940170764923, loss_1: 0.1649169921875, loss_2: 0.055023193359375, loss_3: 0.060333251953125
+[2025-02-01 21:44:20,722 INFO train.py line 211 2443] iter: 340, total_loss: 0.09898719191551208, loss_1: 0.2357177734375, loss_2: 0.03582763671875, loss_3: 0.062103271484375
+[2025-02-01 21:44:21,972 INFO train.py line 211 2443] iter: 350, total_loss: 0.1012771874666214, loss_1: 0.2117919921875, loss_2: 0.0537109375, loss_3: 0.055419921875
+[2025-02-01 21:44:23,211 INFO train.py line 211 2443] iter: 360, total_loss: 0.07320772111415863, loss_1: 0.149658203125, loss_2: 0.052520751953125, loss_3: 0.04248046875
+[2025-02-01 21:44:24,417 INFO train.py line 211 2443] iter: 370, total_loss: 0.20305660367012024, loss_1: 0.442138671875, loss_2: 0.440673828125, loss_3: 0.03399658203125
+[2025-02-01 21:44:25,670 INFO train.py line 211 2443] iter: 380, total_loss: 0.07519914954900742, loss_1: 0.162841796875, loss_2: 0.0650634765625, loss_3: 0.0408935546875
+[2025-02-01 21:44:26,900 INFO train.py line 211 2443] iter: 390, total_loss: 0.09557761251926422, loss_1: 0.19677734375, loss_2: 0.032012939453125, loss_3: 0.058837890625
+[2025-02-01 21:44:28,138 INFO train.py line 211 2443] iter: 400, total_loss: 0.1797739416360855, loss_1: 0.60498046875, loss_2: 0.1666259765625, loss_3: 0.06390380859375
+[2025-02-01 21:44:29,352 INFO train.py line 211 2443] iter: 410, total_loss: 0.09521213173866272, loss_1: 0.1634521484375, loss_2: 0.076416015625, loss_3: 0.06878662109375
+[2025-02-01 21:44:30,565 INFO train.py line 211 2443] iter: 420, total_loss: 0.0876050814986229, loss_1: 0.1981201171875, loss_2: 0.058807373046875, loss_3: 0.044097900390625
+[2025-02-01 21:44:31,753 INFO train.py line 211 2443] iter: 430, total_loss: 0.4449905753135681, loss_1: 0.79345703125, loss_2: 0.2305908203125, loss_3: 0.0278167724609375
+[2025-02-01 21:44:32,990 INFO train.py line 211 2443] iter: 440, total_loss: 0.13505569100379944, loss_1: 0.0570068359375, loss_2: 0.0171966552734375, loss_3: 0.15283203125
+[2025-02-01 21:44:34,209 INFO train.py line 211 2443] iter: 450, total_loss: 0.07918041944503784, loss_1: 0.11553955078125, loss_2: 0.04791259765625, loss_3: 0.06231689453125
+[2025-02-01 21:44:35,422 INFO train.py line 211 2443] iter: 460, total_loss: 0.10776639729738235, loss_1: 0.080322265625, loss_2: 0.07177734375, loss_3: 0.092529296875
+[2025-02-01 21:44:36,652 INFO train.py line 211 2443] iter: 470, total_loss: 0.0852893516421318, loss_1: 0.33984375, loss_2: 0.0200958251953125, loss_3: 0.03155517578125
+[2025-02-01 21:44:37,863 INFO train.py line 211 2443] iter: 480, total_loss: 0.1421339511871338, loss_1: 0.07342529296875, loss_2: 0.020263671875, loss_3: 0.15625
+[2025-02-01 21:44:39,102 INFO train.py line 211 2443] iter: 490, total_loss: 0.1740190088748932, loss_1: 0.60888671875, loss_2: 0.0721435546875, loss_3: 0.02545166015625
+[2025-02-01 21:44:40,354 INFO train.py line 211 2443] iter: 500, total_loss: 0.06784968823194504, loss_1: 0.16015625, loss_2: 0.015869140625, loss_3: 0.045257568359375
+[2025-02-01 21:44:41,572 INFO train.py line 211 2443] iter: 510, total_loss: 0.2846983075141907, loss_1: 0.6240234375, loss_2: 0.0311431884765625, loss_3: 0.029388427734375
+[2025-02-01 21:44:42,797 INFO train.py line 211 2443] iter: 520, total_loss: 0.11530383676290512, loss_1: 0.0869140625, loss_2: 0.043548583984375, loss_3: 0.11102294921875
+[2025-02-01 21:44:44,048 INFO train.py line 211 2443] iter: 530, total_loss: 0.14032605290412903, loss_1: 0.073974609375, loss_2: 0.0186309814453125, loss_3: 0.1539306640625
+[2025-02-01 21:44:45,281 INFO train.py line 211 2443] iter: 540, total_loss: 0.10829316079616547, loss_1: 0.08538818359375, loss_2: 0.020782470703125, loss_3: 0.1104736328125
+[2025-02-01 21:44:46,503 INFO train.py line 211 2443] iter: 550, total_loss: 0.058047108352184296, loss_1: 0.0704345703125, loss_2: 0.03369140625, loss_3: 0.04815673828125
+[2025-02-01 21:44:47,727 INFO train.py line 211 2443] iter: 560, total_loss: 0.16489003598690033, loss_1: 0.4443359375, loss_2: 0.389892578125, loss_3: 0.0240631103515625
+[2025-02-01 21:44:48,988 INFO train.py line 211 2443] iter: 570, total_loss: 0.06511848419904709, loss_1: 0.14208984375, loss_2: 0.056884765625, loss_3: 0.028533935546875
+[2025-02-01 21:44:50,229 INFO train.py line 211 2443] iter: 580, total_loss: 0.09908390045166016, loss_1: 0.0621337890625, loss_2: 0.04791259765625, loss_3: 0.0933837890625
+[2025-02-01 21:44:51,458 INFO train.py line 211 2443] iter: 590, total_loss: 0.0691804364323616, loss_1: 0.130859375, loss_2: 0.06707763671875, loss_3: 0.04193115234375
+[2025-02-01 21:44:52,677 INFO train.py line 211 2443] iter: 600, total_loss: 0.05012045055627823, loss_1: 0.1571044921875, loss_2: 0.0141143798828125, loss_3: 0.0207672119140625
+[2025-02-01 21:44:53,895 INFO train.py line 211 2443] iter: 610, total_loss: 0.06496648490428925, loss_1: 0.263671875, loss_2: 0.0199432373046875, loss_3: 0.01715087890625
+[2025-02-01 21:44:55,138 INFO train.py line 211 2443] iter: 620, total_loss: 0.3450224697589874, loss_1: 0.63916015625, loss_2: 0.52294921875, loss_3: 0.0246429443359375
+[2025-02-01 21:44:56,391 INFO train.py line 211 2443] iter: 630, total_loss: 0.08703477680683136, loss_1: 0.153076171875, loss_2: 0.0246429443359375, loss_3: 0.064697265625
+[2025-02-01 21:44:57,641 INFO train.py line 211 2443] iter: 640, total_loss: 0.10132555663585663, loss_1: 0.1392822265625, loss_2: 0.0105133056640625, loss_3: 0.08502197265625
+[2025-02-01 21:44:58,888 INFO train.py line 211 2443] iter: 650, total_loss: 0.06644760817289352, loss_1: 0.197265625, loss_2: 0.031982421875, loss_3: 0.0321044921875
+[2025-02-01 21:45:00,129 INFO train.py line 211 2443] iter: 660, total_loss: 0.09206057339906693, loss_1: 0.09112548828125, loss_2: 0.024017333984375, loss_3: 0.08770751953125
+[2025-02-01 21:45:01,349 INFO train.py line 211 2443] iter: 670, total_loss: 0.07386267185211182, loss_1: 0.10968017578125, loss_2: 0.1031494140625, loss_3: 0.042755126953125
+[2025-02-01 21:45:02,581 INFO train.py line 211 2443] iter: 680, total_loss: 0.06785988807678223, loss_1: 0.2344970703125, loss_2: 0.020538330078125, loss_3: 0.02117919921875
+[2025-02-01 21:45:03,804 INFO train.py line 211 2443] iter: 690, total_loss: 0.04777306318283081, loss_1: 0.10546875, loss_2: 0.013092041015625, loss_3: 0.0345458984375
+[2025-02-01 21:45:05,046 INFO train.py line 211 2443] iter: 700, total_loss: 0.10713186115026474, loss_1: 0.2325439453125, loss_2: 0.0208740234375, loss_3: 0.0260009765625
+[2025-02-01 21:45:06,287 INFO train.py line 211 2443] iter: 710, total_loss: 0.05793203413486481, loss_1: 0.1749267578125, loss_2: 0.0592041015625, loss_3: 0.0186767578125
+[2025-02-01 21:45:07,509 INFO train.py line 211 2443] iter: 720, total_loss: 0.1778416484594345, loss_1: 0.03863525390625, loss_2: 0.01401519775390625, loss_3: 0.21484375
+[2025-02-01 21:45:08,738 INFO train.py line 211 2443] iter: 730, total_loss: 0.04595815762877464, loss_1: 0.0921630859375, loss_2: 0.0174407958984375, loss_3: 0.0318603515625
+[2025-02-01 21:45:09,964 INFO train.py line 211 2443] iter: 740, total_loss: 0.061322279274463654, loss_1: 0.1590576171875, loss_2: 0.01220703125, loss_3: 0.03741455078125
+[2025-02-01 21:45:11,206 INFO train.py line 211 2443] iter: 750, total_loss: 0.227484330534935, loss_1: 0.4482421875, loss_2: 0.0994873046875, loss_3: 0.0124359130859375
+[2025-02-01 21:45:12,431 INFO train.py line 211 2443] iter: 760, total_loss: 0.04652481898665428, loss_1: 0.11279296875, loss_2: 0.01342010498046875, loss_3: 0.028106689453125
+[2025-02-01 21:45:13,652 INFO train.py line 211 2443] iter: 770, total_loss: 0.12358114868402481, loss_1: 0.20263671875, loss_2: 0.059967041015625, loss_3: 0.037750244140625
+[2025-02-01 21:45:14,866 INFO train.py line 211 2443] iter: 780, total_loss: 0.046739064157009125, loss_1: 0.12091064453125, loss_2: 0.010345458984375, loss_3: 0.02972412109375
+[2025-02-01 21:45:16,134 INFO train.py line 211 2443] iter: 790, total_loss: 0.2276451736688614, loss_1: 0.6064453125, loss_2: 0.02557373046875, loss_3: 0.0285491943359375
+[2025-02-01 21:45:17,348 INFO train.py line 211 2443] iter: 800, total_loss: 0.06654976308345795, loss_1: 0.04327392578125, loss_2: 0.0148468017578125, loss_3: 0.06976318359375
+[2025-02-01 21:45:18,580 INFO train.py line 211 2443] iter: 810, total_loss: 0.08286161720752716, loss_1: 0.09808349609375, loss_2: 0.0214996337890625, loss_3: 0.07464599609375
+[2025-02-01 21:45:19,799 INFO train.py line 211 2443] iter: 820, total_loss: 0.04974455386400223, loss_1: 0.1048583984375, loss_2: 0.0267181396484375, loss_3: 0.0291900634765625
+[2025-02-01 21:45:21,012 INFO train.py line 211 2443] iter: 830, total_loss: 0.09476736187934875, loss_1: 0.0672607421875, loss_2: 0.01128387451171875, loss_3: 0.10247802734375
+[2025-02-01 21:45:22,237 INFO train.py line 211 2443] iter: 840, total_loss: 0.29937806725502014, loss_1: 0.73388671875, loss_2: 0.0936279296875, loss_3: 0.05413818359375
+[2025-02-01 21:45:23,467 INFO train.py line 211 2443] iter: 850, total_loss: 0.2006312608718872, loss_1: 0.64111328125, loss_2: 0.10302734375, loss_3: 0.08184814453125
+[2025-02-01 21:45:24,681 INFO train.py line 211 2443] iter: 860, total_loss: 0.09176179766654968, loss_1: 0.170166015625, loss_2: 0.139404296875, loss_3: 0.02557373046875
+[2025-02-01 21:45:25,910 INFO train.py line 211 2443] iter: 870, total_loss: 0.08448627591133118, loss_1: 0.33935546875, loss_2: 0.038421630859375, loss_3: 0.02777099609375
+[2025-02-01 21:45:27,168 INFO train.py line 211 2443] iter: 880, total_loss: 0.10426431894302368, loss_1: 0.04840087890625, loss_2: 0.035369873046875, loss_3: 0.11651611328125
+[2025-02-01 21:45:28,433 INFO train.py line 211 2443] iter: 890, total_loss: 0.0849132388830185, loss_1: 0.06634521484375, loss_2: 0.0219879150390625, loss_3: 0.0853271484375
+[2025-02-01 21:45:29,687 INFO train.py line 211 2443] iter: 900, total_loss: 0.062379758805036545, loss_1: 0.064208984375, loss_2: 0.0198211669921875, loss_3: 0.058197021484375
+[2025-02-01 21:45:30,910 INFO train.py line 211 2443] iter: 910, total_loss: 0.13087376952171326, loss_1: 0.310546875, loss_2: 0.2919921875, loss_3: 0.022186279296875
+[2025-02-01 21:45:32,153 INFO train.py line 211 2443] iter: 920, total_loss: 0.11615978926420212, loss_1: 0.47802734375, loss_2: 0.039031982421875, loss_3: 0.0198974609375
+[2025-02-01 21:45:33,397 INFO train.py line 211 2443] iter: 930, total_loss: 0.09329716861248016, loss_1: 0.128662109375, loss_2: 0.03399658203125, loss_3: 0.058502197265625
+[2025-02-01 21:45:34,637 INFO train.py line 211 2443] iter: 940, total_loss: 0.060964345932006836, loss_1: 0.08477783203125, loss_2: 0.0112457275390625, loss_3: 0.05487060546875
+[2025-02-01 21:45:35,883 INFO train.py line 211 2443] iter: 950, total_loss: 0.0690823569893837, loss_1: 0.0677490234375, loss_2: 0.0082855224609375, loss_3: 0.068359375
+[2025-02-01 21:45:37,119 INFO train.py line 211 2443] iter: 960, total_loss: 0.0444757416844368, loss_1: 0.044403076171875, loss_2: 0.008209228515625, loss_3: 0.042816162109375
+[2025-02-01 21:45:38,370 INFO train.py line 211 2443] iter: 970, total_loss: 0.05473431572318077, loss_1: 0.06414794921875, loss_2: 0.021759033203125, loss_3: 0.047607421875
+[2025-02-01 21:45:39,608 INFO train.py line 211 2443] iter: 980, total_loss: 0.08473527431488037, loss_1: 0.30859375, loss_2: 0.04095458984375, loss_3: 0.0255889892578125
+[2025-02-01 21:45:40,850 INFO train.py line 211 2443] iter: 990, total_loss: 0.2461221069097519, loss_1: 0.44384765625, loss_2: 0.1907958984375, loss_3: 0.0304107666015625
+[2025-02-01 21:45:42,092 INFO train.py line 211 2443] iter: 1000, total_loss: 0.3075050413608551, loss_1: 0.560546875, loss_2: 0.326416015625, loss_3: 0.018310546875
+[2025-02-01 21:45:43,358 INFO train.py line 211 2443] iter: 1010, total_loss: 0.043973371386528015, loss_1: 0.08258056640625, loss_2: 0.00811767578125, loss_3: 0.0343017578125
+[2025-02-01 21:45:44,604 INFO train.py line 211 2443] iter: 1020, total_loss: 0.06661135703325272, loss_1: 0.07171630859375, loss_2: 0.00798797607421875, loss_3: 0.06463623046875
+[2025-02-01 21:45:45,818 INFO train.py line 211 2443] iter: 1030, total_loss: 0.058943040668964386, loss_1: 0.06396484375, loss_2: 0.0048370361328125, loss_3: 0.05731201171875
+[2025-02-01 21:45:47,037 INFO train.py line 211 2443] iter: 1040, total_loss: 0.045913100242614746, loss_1: 0.060333251953125, loss_2: 0.05291748046875, loss_3: 0.028717041015625
+[2025-02-01 21:45:48,273 INFO train.py line 211 2443] iter: 1050, total_loss: 0.042252399027347565, loss_1: 0.06280517578125, loss_2: 0.00939178466796875, loss_3: 0.03582763671875
+[2025-02-01 21:45:49,516 INFO train.py line 211 2443] iter: 1060, total_loss: 0.24010004103183746, loss_1: 0.62158203125, loss_2: 0.02001953125, loss_3: 0.0139007568359375
+[2025-02-01 21:45:50,748 INFO train.py line 211 2443] iter: 1070, total_loss: 0.05976393446326256, loss_1: 0.1510009765625, loss_2: 0.00940704345703125, loss_3: 0.030242919921875
+[2025-02-01 21:45:51,980 INFO train.py line 211 2443] iter: 1080, total_loss: 0.08549777418375015, loss_1: 0.215576171875, loss_2: 0.01763916015625, loss_3: 0.0285797119140625
+[2025-02-01 21:45:53,183 INFO train.py line 211 2443] iter: 1090, total_loss: 0.07154752314090729, loss_1: 0.06597900390625, loss_2: 0.06097412109375, loss_3: 0.06011962890625
+[2025-02-01 21:45:54,422 INFO train.py line 211 2443] iter: 1100, total_loss: 0.0841192752122879, loss_1: 0.12396240234375, loss_2: 0.055938720703125, loss_3: 0.058502197265625
+[2025-02-01 21:45:55,663 INFO train.py line 211 2443] iter: 1110, total_loss: 0.08112317323684692, loss_1: 0.07904052734375, loss_2: 0.0283660888671875, loss_3: 0.06488037109375
+[2025-02-01 21:45:56,893 INFO train.py line 211 2443] iter: 1120, total_loss: 0.12569624185562134, loss_1: 0.051300048828125, loss_2: 0.0390625, loss_3: 0.1373291015625
+[2025-02-01 21:45:58,134 INFO train.py line 211 2443] iter: 1130, total_loss: 0.05394124984741211, loss_1: 0.1220703125, loss_2: 0.011505126953125, loss_3: 0.0307159423828125
+[2025-02-01 21:45:59,356 INFO train.py line 211 2443] iter: 1140, total_loss: 0.06892453134059906, loss_1: 0.0694580078125, loss_2: 0.06341552734375, loss_3: 0.0538330078125
+[2025-02-01 21:46:00,613 INFO train.py line 211 2443] iter: 1150, total_loss: 0.0845227986574173, loss_1: 0.0506591796875, loss_2: 0.0271148681640625, loss_3: 0.08990478515625
+[2025-02-01 21:46:01,861 INFO train.py line 211 2443] iter: 1160, total_loss: 0.18972615897655487, loss_1: 0.495849609375, loss_2: 0.01103973388671875, loss_3: 0.0168609619140625
+[2025-02-01 21:46:03,108 INFO train.py line 211 2443] iter: 1170, total_loss: 0.10909950733184814, loss_1: 0.388916015625, loss_2: 0.012176513671875, loss_3: 0.034912109375
+[2025-02-01 21:46:04,323 INFO train.py line 211 2443] iter: 1180, total_loss: 0.06643866002559662, loss_1: 0.0994873046875, loss_2: 0.0202178955078125, loss_3: 0.051727294921875
+[2025-02-01 21:46:05,547 INFO train.py line 211 2443] iter: 1190, total_loss: 0.056928861886262894, loss_1: 0.15625, loss_2: 0.011566162109375, loss_3: 0.03118896484375
+[2025-02-01 21:46:06,820 INFO train.py line 211 2443] iter: 1200, total_loss: 0.07987765222787857, loss_1: 0.05889892578125, loss_2: 0.0131988525390625, loss_3: 0.08331298828125
+[2025-02-01 21:46:08,073 INFO train.py line 211 2443] iter: 1210, total_loss: 0.047517284750938416, loss_1: 0.07135009765625, loss_2: 0.059478759765625, loss_3: 0.024566650390625
+[2025-02-01 21:46:09,309 INFO train.py line 211 2443] iter: 1220, total_loss: 0.04359626770019531, loss_1: 0.08502197265625, loss_2: 0.0226593017578125, loss_3: 0.026336669921875
+[2025-02-01 21:46:10,559 INFO train.py line 211 2443] iter: 1230, total_loss: 0.06711229681968689, loss_1: 0.0791015625, loss_2: 0.04205322265625, loss_3: 0.055694580078125
+[2025-02-01 21:46:11,788 INFO train.py line 211 2443] iter: 1240, total_loss: 0.04970795661211014, loss_1: 0.0977783203125, loss_2: 0.00682830810546875, loss_3: 0.038604736328125
+[2025-02-01 21:46:12,981 INFO train.py line 211 2443] iter: 1250, total_loss: 0.25051456689834595, loss_1: 0.6484375, loss_2: 0.281982421875, loss_3: 0.08465576171875
+[2025-02-01 21:46:14,249 INFO train.py line 211 2443] iter: 1260, total_loss: 0.09272502362728119, loss_1: 0.033416748046875, loss_2: 0.0188446044921875, loss_3: 0.113037109375
+[2025-02-01 21:46:15,488 INFO train.py line 211 2443] iter: 1270, total_loss: 0.08419319242238998, loss_1: 0.065673828125, loss_2: 0.026153564453125, loss_3: 0.08319091796875
+[2025-02-01 21:46:16,700 INFO train.py line 211 2443] iter: 1280, total_loss: 0.13828210532665253, loss_1: 0.376708984375, loss_2: 0.293212890625, loss_3: 0.0162506103515625
+[2025-02-01 21:46:17,938 INFO train.py line 211 2443] iter: 1290, total_loss: 0.04916352778673172, loss_1: 0.137939453125, loss_2: 0.01381683349609375, loss_3: 0.0260467529296875
+[2025-02-01 21:46:19,148 INFO train.py line 211 2443] iter: 1300, total_loss: 0.04801928624510765, loss_1: 0.11370849609375, loss_2: 0.012542724609375, loss_3: 0.0291748046875
+[2025-02-01 21:46:20,387 INFO train.py line 211 2443] iter: 1310, total_loss: 0.08238469809293747, loss_1: 0.264892578125, loss_2: 0.046966552734375, loss_3: 0.0229644775390625
+[2025-02-01 21:46:21,596 INFO train.py line 211 2443] iter: 1320, total_loss: 0.06193646416068077, loss_1: 0.1634521484375, loss_2: 0.0494384765625, loss_3: 0.024169921875
+[2025-02-01 21:46:22,839 INFO train.py line 211 2443] iter: 1330, total_loss: 0.09092382341623306, loss_1: 0.283935546875, loss_2: 0.0265960693359375, loss_3: 0.019683837890625
+[2025-02-01 21:46:24,087 INFO train.py line 211 2443] iter: 1340, total_loss: 0.06737880408763885, loss_1: 0.1885986328125, loss_2: 0.009796142578125, loss_3: 0.03167724609375
+[2025-02-01 21:46:25,311 INFO train.py line 211 2443] iter: 1350, total_loss: 0.05143508315086365, loss_1: 0.05413818359375, loss_2: 0.033050537109375, loss_3: 0.0430908203125
+[2025-02-01 21:46:26,557 INFO train.py line 211 2443] iter: 1360, total_loss: 0.04605601727962494, loss_1: 0.0877685546875, loss_2: 0.010986328125, loss_3: 0.033660888671875
+[2025-02-01 21:46:27,790 INFO train.py line 211 2443] iter: 1370, total_loss: 0.04298611730337143, loss_1: 0.09619140625, loss_2: 0.0273590087890625, loss_3: 0.0243072509765625
+[2025-02-01 21:46:29,029 INFO train.py line 211 2443] iter: 1380, total_loss: 0.05421988666057587, loss_1: 0.045074462890625, loss_2: 0.0225677490234375, loss_3: 0.05157470703125
+[2025-02-01 21:46:30,243 INFO train.py line 211 2443] iter: 1390, total_loss: 0.04312630742788315, loss_1: 0.1058349609375, loss_2: 0.006687164306640625, loss_3: 0.026275634765625
+[2025-02-01 21:46:31,475 INFO train.py line 211 2443] iter: 1400, total_loss: 0.49106645584106445, loss_1: 0.619140625, loss_2: 0.58740234375, loss_3: 0.0186920166015625
+[2025-02-01 21:46:32,733 INFO train.py line 211 2443] iter: 1410, total_loss: 0.19063837826251984, loss_1: 0.69482421875, loss_2: 0.0039043426513671875, loss_3: 0.07000732421875
+[2025-02-01 21:46:33,969 INFO train.py line 211 2443] iter: 1420, total_loss: 0.0542176254093647, loss_1: 0.046234130859375, loss_2: 0.0144500732421875, loss_3: 0.05157470703125
+[2025-02-01 21:46:35,207 INFO train.py line 211 2443] iter: 1430, total_loss: 0.09557292610406876, loss_1: 0.37890625, loss_2: 0.0038604736328125, loss_3: 0.01080322265625
+[2025-02-01 21:46:36,428 INFO train.py line 211 2443] iter: 1440, total_loss: 0.045758336782455444, loss_1: 0.08343505859375, loss_2: 0.03741455078125, loss_3: 0.02386474609375
+[2025-02-01 21:46:37,642 INFO train.py line 211 2443] iter: 1450, total_loss: 0.0417490229010582, loss_1: 0.149658203125, loss_2: 0.00685882568359375, loss_3: 0.022186279296875
+[2025-02-01 21:46:38,883 INFO train.py line 211 2443] iter: 1460, total_loss: 0.07336238771677017, loss_1: 0.09173583984375, loss_2: 0.04998779296875, loss_3: 0.043731689453125
+[2025-02-01 21:46:40,142 INFO train.py line 211 2443] iter: 1470, total_loss: 0.07334508001804352, loss_1: 0.089599609375, loss_2: 0.0215911865234375, loss_3: 0.05389404296875
+[2025-02-01 21:46:41,364 INFO train.py line 211 2443] iter: 1480, total_loss: 0.05324869975447655, loss_1: 0.048675537109375, loss_2: 0.008056640625, loss_3: 0.053131103515625
+[2025-02-01 21:46:42,610 INFO train.py line 211 2443] iter: 1490, total_loss: 0.04525201767683029, loss_1: 0.0439453125, loss_2: 0.011688232421875, loss_3: 0.04302978515625
+[2025-02-01 21:46:43,851 INFO train.py line 211 2443] iter: 1500, total_loss: 0.06779877096414566, loss_1: 0.2386474609375, loss_2: 0.048370361328125, loss_3: 0.018157958984375
+[2025-02-01 21:46:45,094 INFO train.py line 211 2443] iter: 1510, total_loss: 0.15211918950080872, loss_1: 0.60546875, loss_2: 0.032928466796875, loss_3: 0.049896240234375
+[2025-02-01 21:46:46,318 INFO train.py line 211 2443] iter: 1520, total_loss: 0.04964136704802513, loss_1: 0.045440673828125, loss_2: 0.00870513916015625, loss_3: 0.049163818359375
+[2025-02-01 21:46:47,535 INFO train.py line 211 2443] iter: 1530, total_loss: 0.07550506293773651, loss_1: 0.059539794921875, loss_2: 0.00762939453125, loss_3: 0.07891845703125
+[2025-02-01 21:46:48,759 INFO train.py line 211 2443] iter: 1540, total_loss: 0.07122718542814255, loss_1: 0.10174560546875, loss_2: 0.0296478271484375, loss_3: 0.05535888671875
+[2025-02-01 21:46:49,996 INFO train.py line 211 2443] iter: 1550, total_loss: 0.15457302331924438, loss_1: 0.485595703125, loss_2: 0.003978729248046875, loss_3: 0.01361083984375
+[2025-02-01 21:46:51,235 INFO train.py line 211 2443] iter: 1560, total_loss: 0.05481754243373871, loss_1: 0.10491943359375, loss_2: 0.077880859375, loss_3: 0.024444580078125
+[2025-02-01 21:46:52,470 INFO train.py line 211 2443] iter: 1570, total_loss: 0.08530422300100327, loss_1: 0.315185546875, loss_2: 0.024322509765625, loss_3: 0.0256195068359375
+[2025-02-01 21:46:53,708 INFO train.py line 211 2443] iter: 1580, total_loss: 0.07314719259738922, loss_1: 0.04681396484375, loss_2: 0.0261993408203125, loss_3: 0.0743408203125
+[2025-02-01 21:46:54,956 INFO train.py line 211 2443] iter: 1590, total_loss: 0.08423613011837006, loss_1: 0.06561279296875, loss_2: 0.01387786865234375, loss_3: 0.08795166015625
+[2025-02-01 21:46:56,193 INFO train.py line 211 2443] iter: 1600, total_loss: 0.06830763816833496, loss_1: 0.15771484375, loss_2: 0.047119140625, loss_3: 0.03143310546875
+[2025-02-01 21:46:57,433 INFO train.py line 211 2443] iter: 1610, total_loss: 0.08024925738573074, loss_1: 0.253662109375, loss_2: 0.0038738250732421875, loss_3: 0.034210205078125
+[2025-02-01 21:46:58,712 INFO train.py line 211 2443] iter: 1620, total_loss: 0.048789143562316895, loss_1: 0.09576416015625, loss_2: 0.0284271240234375, loss_3: 0.030914306640625
+[2025-02-01 21:46:59,976 INFO train.py line 211 2443] iter: 1630, total_loss: 0.24454061686992645, loss_1: 0.5263671875, loss_2: 0.05804443359375, loss_3: 0.013092041015625
+[2025-02-01 21:47:01,222 INFO train.py line 211 2443] iter: 1640, total_loss: 0.05384431779384613, loss_1: 0.1070556640625, loss_2: 0.04937744140625, loss_3: 0.0306549072265625
+[2025-02-01 21:47:02,458 INFO train.py line 211 2443] iter: 1650, total_loss: 0.05544198676943779, loss_1: 0.045257568359375, loss_2: 0.0091705322265625, loss_3: 0.056549072265625
+[2025-02-01 21:47:03,677 INFO train.py line 211 2443] iter: 1660, total_loss: 0.0534534677863121, loss_1: 0.116943359375, loss_2: 0.039337158203125, loss_3: 0.033660888671875
+[2025-02-01 21:47:04,903 INFO train.py line 211 2443] iter: 1670, total_loss: 0.08112184703350067, loss_1: 0.046630859375, loss_2: 0.02276611328125, loss_3: 0.08538818359375
+[2025-02-01 21:47:06,157 INFO train.py line 211 2443] iter: 1680, total_loss: 0.04784077778458595, loss_1: 0.09674072265625, loss_2: 0.0221405029296875, loss_3: 0.027374267578125
+[2025-02-01 21:47:07,400 INFO train.py line 211 2443] iter: 1690, total_loss: 0.2723233699798584, loss_1: 0.73291015625, loss_2: 0.01447296142578125, loss_3: 0.02197265625
+[2025-02-01 21:47:08,605 INFO train.py line 211 2443] iter: 1700, total_loss: 0.05971807613968849, loss_1: 0.038909912109375, loss_2: 0.0086517333984375, loss_3: 0.06353759765625
+[2025-02-01 21:47:09,856 INFO train.py line 211 2443] iter: 1710, total_loss: 0.24197399616241455, loss_1: 0.5048828125, loss_2: 0.022491455078125, loss_3: 0.0165557861328125
+[2025-02-01 21:47:11,072 INFO train.py line 211 2443] iter: 1720, total_loss: 0.05377345532178879, loss_1: 0.053466796875, loss_2: 0.0229339599609375, loss_3: 0.04949951171875
+[2025-02-01 21:47:12,317 INFO train.py line 211 2443] iter: 1730, total_loss: 0.0696663036942482, loss_1: 0.0335693359375, loss_2: 0.0060577392578125, loss_3: 0.07867431640625
+[2025-02-01 21:47:13,549 INFO train.py line 211 2443] iter: 1740, total_loss: 0.05549651011824608, loss_1: 0.09326171875, loss_2: 0.053619384765625, loss_3: 0.03607177734375
+[2025-02-01 21:47:14,793 INFO train.py line 211 2443] iter: 1750, total_loss: 0.06890232861042023, loss_1: 0.2437744140625, loss_2: 0.030609130859375, loss_3: 0.023590087890625
+[2025-02-01 21:47:16,017 INFO train.py line 211 2443] iter: 1760, total_loss: 0.046778883785009384, loss_1: 0.045989990234375, loss_2: 0.01009368896484375, loss_3: 0.04522705078125
+[2025-02-01 21:47:17,263 INFO train.py line 211 2443] iter: 1770, total_loss: 0.0530032254755497, loss_1: 0.067138671875, loss_2: 0.01554107666015625, loss_3: 0.0478515625
+[2025-02-01 21:47:18,500 INFO train.py line 211 2443] iter: 1780, total_loss: 0.10574169456958771, loss_1: 0.427490234375, loss_2: 0.035003662109375, loss_3: 0.0223236083984375
+[2025-02-01 21:47:19,729 INFO train.py line 211 2443] iter: 1790, total_loss: 0.04606785252690315, loss_1: 0.0760498046875, loss_2: 0.01134490966796875, loss_3: 0.038604736328125
+[2025-02-01 21:47:20,976 INFO train.py line 211 2443] iter: 1800, total_loss: 0.0568903312087059, loss_1: 0.078857421875, loss_2: 0.07257080078125, loss_3: 0.037139892578125
+[2025-02-01 21:47:22,218 INFO train.py line 211 2443] iter: 1810, total_loss: 0.04481884092092514, loss_1: 0.1038818359375, loss_2: 0.02398681640625, loss_3: 0.0250091552734375
+[2025-02-01 21:47:23,466 INFO train.py line 211 2443] iter: 1820, total_loss: 0.06534971296787262, loss_1: 0.2216796875, loss_2: 0.01114654541015625, loss_3: 0.0235748291015625
+[2025-02-01 21:47:24,715 INFO train.py line 211 2443] iter: 1830, total_loss: 0.04981453716754913, loss_1: 0.09173583984375, loss_2: 0.0281524658203125, loss_3: 0.0308685302734375
+[2025-02-01 21:47:25,958 INFO train.py line 211 2443] iter: 1840, total_loss: 0.04392055422067642, loss_1: 0.057464599609375, loss_2: 0.00739288330078125, loss_3: 0.03948974609375
+[2025-02-01 21:47:27,218 INFO train.py line 211 2443] iter: 1850, total_loss: 0.2983064651489258, loss_1: 0.50732421875, loss_2: 0.2330322265625, loss_3: 0.0110626220703125
+[2025-02-01 21:47:28,446 INFO train.py line 211 2443] iter: 1860, total_loss: 0.10160135477781296, loss_1: 0.242919921875, loss_2: 0.1810302734375, loss_3: 0.024139404296875
+[2025-02-01 21:47:29,713 INFO train.py line 211 2443] iter: 1870, total_loss: 0.0740627869963646, loss_1: 0.054473876953125, loss_2: 0.00954437255859375, loss_3: 0.07806396484375
+[2025-02-01 21:47:30,946 INFO train.py line 211 2443] iter: 1880, total_loss: 0.04074401408433914, loss_1: 0.06854248046875, loss_2: 0.0258941650390625, loss_3: 0.0287628173828125
+[2025-02-01 21:47:32,181 INFO train.py line 211 2443] iter: 1890, total_loss: 0.03275325521826744, loss_1: 0.040557861328125, loss_2: 0.005306243896484375, loss_3: 0.029541015625
+[2025-02-01 21:47:33,409 INFO train.py line 211 2443] iter: 1900, total_loss: 0.04592454060912132, loss_1: 0.08197021484375, loss_2: 0.017303466796875, loss_3: 0.032989501953125
+[2025-02-01 21:47:34,633 INFO train.py line 211 2443] iter: 1910, total_loss: 0.0988619476556778, loss_1: 0.19091796875, loss_2: 0.035888671875, loss_3: 0.034637451171875
+[2025-02-01 21:47:35,865 INFO train.py line 211 2443] iter: 1920, total_loss: 0.04285619407892227, loss_1: 0.12353515625, loss_2: 0.03521728515625, loss_3: 0.01824951171875
+[2025-02-01 21:47:37,119 INFO train.py line 211 2443] iter: 1930, total_loss: 0.049543384462594986, loss_1: 0.07861328125, loss_2: 0.022705078125, loss_3: 0.037567138671875
+[2025-02-01 21:47:38,377 INFO train.py line 211 2443] iter: 1940, total_loss: 0.09302809834480286, loss_1: 0.0552978515625, loss_2: 0.021636962890625, loss_3: 0.09832763671875
+[2025-02-01 21:47:39,607 INFO train.py line 211 2443] iter: 1950, total_loss: 0.07216252386569977, loss_1: 0.07305908203125, loss_2: 0.0288848876953125, loss_3: 0.06463623046875
+[2025-02-01 21:47:40,888 INFO train.py line 211 2443] iter: 1960, total_loss: 0.05442740395665169, loss_1: 0.05841064453125, loss_2: 0.01126861572265625, loss_3: 0.05218505859375
+[2025-02-01 21:47:42,124 INFO train.py line 211 2443] iter: 1970, total_loss: 0.04504566267132759, loss_1: 0.0823974609375, loss_2: 0.053375244140625, loss_3: 0.0235137939453125
+[2025-02-01 21:47:43,367 INFO train.py line 211 2443] iter: 1980, total_loss: 0.06205699220299721, loss_1: 0.107666015625, loss_2: 0.02728271484375, loss_3: 0.04608154296875
+[2025-02-01 21:47:44,621 INFO train.py line 211 2443] iter: 1990, total_loss: 0.05279272049665451, loss_1: 0.0906982421875, loss_2: 0.00437164306640625, loss_3: 0.043060302734375
+[2025-02-01 21:47:45,870 INFO train.py line 211 2443] iter: 2000, total_loss: 0.05619671940803528, loss_1: 0.049285888671875, loss_2: 0.00966644287109375, loss_3: 0.056365966796875
+[2025-02-01 21:47:47,105 INFO train.py line 211 2443] iter: 2010, total_loss: 0.05809205025434494, loss_1: 0.046722412109375, loss_2: 0.00463104248046875, loss_3: 0.06060791015625
+[2025-02-01 21:47:48,353 INFO train.py line 211 2443] iter: 2020, total_loss: 0.09497687220573425, loss_1: 0.369384765625, loss_2: 0.06390380859375, loss_3: 0.0235443115234375
+[2025-02-01 21:47:49,603 INFO train.py line 211 2443] iter: 2030, total_loss: 0.09875175356864929, loss_1: 0.040069580078125, loss_2: 0.003444671630859375, loss_3: 0.11517333984375
+[2025-02-01 21:47:50,836 INFO train.py line 211 2443] iter: 2040, total_loss: 0.07738376408815384, loss_1: 0.28076171875, loss_2: 0.032806396484375, loss_3: 0.0223846435546875
+[2025-02-01 21:47:52,089 INFO train.py line 211 2443] iter: 2050, total_loss: 0.16669876873493195, loss_1: 0.5419921875, loss_2: 0.11981201171875, loss_3: 0.024658203125
+[2025-02-01 21:47:53,317 INFO train.py line 211 2443] iter: 2060, total_loss: 0.04937661439180374, loss_1: 0.05584716796875, loss_2: 0.002994537353515625, loss_3: 0.048095703125
+[2025-02-01 21:47:54,585 INFO train.py line 211 2443] iter: 2070, total_loss: 0.0431949645280838, loss_1: 0.12335205078125, loss_2: 0.01116180419921875, loss_3: 0.0213623046875
+[2025-02-01 21:47:55,841 INFO train.py line 211 2443] iter: 2080, total_loss: 0.08441270887851715, loss_1: 0.34326171875, loss_2: 0.0694580078125, loss_3: 0.0102996826171875
+[2025-02-01 21:47:57,107 INFO train.py line 211 2443] iter: 2090, total_loss: 0.07119809091091156, loss_1: 0.30224609375, loss_2: 0.0139312744140625, loss_3: 0.01641845703125
+[2025-02-01 21:47:58,344 INFO train.py line 211 2443] iter: 2100, total_loss: 0.04832158237695694, loss_1: 0.0576171875, loss_2: 0.0306243896484375, loss_3: 0.038726806640625
+[2025-02-01 21:47:59,596 INFO train.py line 211 2443] iter: 2110, total_loss: 0.05768483877182007, loss_1: 0.053924560546875, loss_2: 0.01318359375, loss_3: 0.05328369140625
+[2025-02-01 21:48:00,870 INFO train.py line 211 2443] iter: 2120, total_loss: 0.09449419379234314, loss_1: 0.047607421875, loss_2: 0.04736328125, loss_3: 0.0958251953125
+[2025-02-01 21:48:02,147 INFO train.py line 211 2443] iter: 2130, total_loss: 0.04422106593847275, loss_1: 0.08251953125, loss_2: 0.054473876953125, loss_3: 0.018463134765625
+[2025-02-01 21:48:03,385 INFO train.py line 211 2443] iter: 2140, total_loss: 0.10807817429304123, loss_1: 0.381591796875, loss_2: 0.209228515625, loss_3: 0.0203704833984375
+[2025-02-01 21:48:04,641 INFO train.py line 211 2443] iter: 2150, total_loss: 0.14175957441329956, loss_1: 0.398681640625, loss_2: 0.1783447265625, loss_3: 0.021392822265625
+[2025-02-01 21:48:05,925 INFO train.py line 211 2443] iter: 2160, total_loss: 0.06946980208158493, loss_1: 0.181396484375, loss_2: 0.10162353515625, loss_3: 0.023284912109375
+[2025-02-01 21:48:07,190 INFO train.py line 211 2443] iter: 2170, total_loss: 0.11558032035827637, loss_1: 0.35595703125, loss_2: 0.049346923828125, loss_3: 0.046173095703125
+[2025-02-01 21:48:08,436 INFO train.py line 211 2443] iter: 2180, total_loss: 0.04309947416186333, loss_1: 0.06951904296875, loss_2: 0.02410888671875, loss_3: 0.03131103515625
+[2025-02-01 21:48:09,698 INFO train.py line 211 2443] iter: 2190, total_loss: 0.06549449265003204, loss_1: 0.12744140625, loss_2: 0.017120361328125, loss_3: 0.048187255859375
+[2025-02-01 21:48:10,956 INFO train.py line 211 2443] iter: 2200, total_loss: 0.06244289129972458, loss_1: 0.0247039794921875, loss_2: 0.005420684814453125, loss_3: 0.08837890625
+[2025-02-01 21:48:12,227 INFO train.py line 211 2443] iter: 2210, total_loss: 0.06615288555622101, loss_1: 0.191162109375, loss_2: 0.013214111328125, loss_3: 0.0257568359375
+[2025-02-01 21:48:13,492 INFO train.py line 211 2443] iter: 2220, total_loss: 0.08755018562078476, loss_1: 0.06298828125, loss_2: 0.0032558441162109375, loss_3: 0.0968017578125
+[2025-02-01 21:48:14,763 INFO train.py line 211 2443] iter: 2230, total_loss: 0.04903990402817726, loss_1: 0.09124755859375, loss_2: 0.0213775634765625, loss_3: 0.036712646484375
+[2025-02-01 21:48:16,062 INFO train.py line 211 2443] iter: 2240, total_loss: 0.05793343484401703, loss_1: 0.097900390625, loss_2: 0.0206451416015625, loss_3: 0.04229736328125
+[2025-02-01 21:48:17,336 INFO train.py line 211 2443] iter: 2250, total_loss: 0.12641656398773193, loss_1: 0.48291015625, loss_2: 0.0134124755859375, loss_3: 0.042236328125
+[2025-02-01 21:48:18,643 INFO train.py line 211 2443] iter: 2260, total_loss: 0.06143895909190178, loss_1: 0.1583251953125, loss_2: 0.043182373046875, loss_3: 0.0263671875
+[2025-02-01 21:48:19,909 INFO train.py line 211 2443] iter: 2270, total_loss: 0.04474090784788132, loss_1: 0.11431884765625, loss_2: 0.03472900390625, loss_3: 0.022796630859375
+[2025-02-01 21:48:21,183 INFO train.py line 211 2443] iter: 2280, total_loss: 0.05182914063334465, loss_1: 0.060791015625, loss_2: 0.014801025390625, loss_3: 0.046905517578125
+[2025-02-01 21:48:22,465 INFO train.py line 211 2443] iter: 2290, total_loss: 0.10178755223751068, loss_1: 0.2445068359375, loss_2: 0.0300140380859375, loss_3: 0.0244598388671875
+[2025-02-01 21:48:23,737 INFO train.py line 211 2443] iter: 2300, total_loss: 0.07053649425506592, loss_1: 0.23291015625, loss_2: 0.01513671875, loss_3: 0.0203094482421875
+[2025-02-01 21:48:25,047 INFO train.py line 211 2443] iter: 2310, total_loss: 0.036903515458106995, loss_1: 0.06341552734375, loss_2: 0.0245819091796875, loss_3: 0.0240020751953125
+[2025-02-01 21:48:26,321 INFO train.py line 211 2443] iter: 2320, total_loss: 0.04691934958100319, loss_1: 0.041046142578125, loss_2: 0.01201629638671875, loss_3: 0.045989990234375
+[2025-02-01 21:48:27,571 INFO train.py line 211 2443] iter: 2330, total_loss: 0.06823987513780594, loss_1: 0.045257568359375, loss_2: 0.01485443115234375, loss_3: 0.07122802734375
+[2025-02-01 21:48:28,894 INFO train.py line 211 2443] iter: 2340, total_loss: 0.17954914271831512, loss_1: 0.375244140625, loss_2: 0.0138092041015625, loss_3: 0.01216888427734375
+[2025-02-01 21:48:30,222 INFO train.py line 211 2443] iter: 2350, total_loss: 0.18104957044124603, loss_1: 0.450927734375, loss_2: 0.035430908203125, loss_3: 0.007770538330078125
+[2025-02-01 21:48:31,515 INFO train.py line 211 2443] iter: 2360, total_loss: 0.10481582581996918, loss_1: 0.2333984375, loss_2: 0.218994140625, loss_3: 0.03533935546875
+[2025-02-01 21:48:32,778 INFO train.py line 211 2443] iter: 2370, total_loss: 0.044266294687986374, loss_1: 0.07025146484375, loss_2: 0.01422882080078125, loss_3: 0.0352783203125
+[2025-02-01 21:48:34,069 INFO train.py line 211 2443] iter: 2380, total_loss: 0.11203400045633316, loss_1: 0.0401611328125, loss_2: 0.0131378173828125, loss_3: 0.1319580078125
+[2025-02-01 21:48:35,354 INFO train.py line 211 2443] iter: 2390, total_loss: 0.0753295049071312, loss_1: 0.0226593017578125, loss_2: 0.010040283203125, loss_3: 0.11419677734375
+[2025-02-01 21:48:36,646 INFO train.py line 211 2443] iter: 2400, total_loss: 0.10816166549921036, loss_1: 0.306884765625, loss_2: 0.1572265625, loss_3: 0.012359619140625
+[2025-02-01 21:48:37,913 INFO train.py line 211 2443] iter: 2410, total_loss: 0.11023323237895966, loss_1: 0.404541015625, loss_2: 0.0771484375, loss_3: 0.0206451416015625
+[2025-02-01 21:48:39,195 INFO train.py line 211 2443] iter: 2420, total_loss: 0.05865012854337692, loss_1: 0.051116943359375, loss_2: 0.021240234375, loss_3: 0.05224609375
+[2025-02-01 21:48:40,461 INFO train.py line 211 2443] iter: 2430, total_loss: 0.040551841259002686, loss_1: 0.07073974609375, loss_2: 0.01477813720703125, loss_3: 0.0292816162109375
+[2025-02-01 21:48:41,726 INFO train.py line 211 2443] iter: 2440, total_loss: 0.05593055486679077, loss_1: 0.156494140625, loss_2: 0.045501708984375, loss_3: 0.0270538330078125
+[2025-02-01 21:48:42,991 INFO train.py line 211 2443] iter: 2450, total_loss: 0.5193539261817932, loss_1: 0.72509765625, loss_2: 0.492919921875, loss_3: 0.01340484619140625
+[2025-02-01 21:48:44,277 INFO train.py line 211 2443] iter: 2460, total_loss: 0.043562859296798706, loss_1: 0.054046630859375, loss_2: 0.04400634765625, loss_3: 0.0242919921875
+[2025-02-01 21:48:45,556 INFO train.py line 211 2443] iter: 2470, total_loss: 0.03877270966768265, loss_1: 0.136474609375, loss_2: 0.014862060546875, loss_3: 0.01348114013671875
+[2025-02-01 21:48:46,820 INFO train.py line 211 2443] iter: 2480, total_loss: 0.08581309020519257, loss_1: 0.30419921875, loss_2: 0.09002685546875, loss_3: 0.01166534423828125
+[2025-02-01 21:48:48,085 INFO train.py line 211 2443] iter: 2490, total_loss: 0.06574556231498718, loss_1: 0.07159423828125, loss_2: 0.04888916015625, loss_3: 0.053070068359375
+[2025-02-01 21:48:49,354 INFO train.py line 211 2443] iter: 2500, total_loss: 0.10851511359214783, loss_1: 0.474609375, loss_2: 0.01386260986328125, loss_3: 0.0227813720703125
+[2025-02-01 21:48:50,625 INFO train.py line 211 2443] iter: 2510, total_loss: 0.045783303678035736, loss_1: 0.057891845703125, loss_2: 0.01087188720703125, loss_3: 0.041351318359375
+[2025-02-01 21:48:51,880 INFO train.py line 211 2443] iter: 2520, total_loss: 0.038495928049087524, loss_1: 0.1195068359375, loss_2: 0.01491546630859375, loss_3: 0.01666259765625
+[2025-02-01 21:48:53,160 INFO train.py line 211 2443] iter: 2530, total_loss: 0.07126125693321228, loss_1: 0.274169921875, loss_2: 0.01013946533203125, loss_3: 0.010650634765625
+[2025-02-01 21:48:54,448 INFO train.py line 211 2443] iter: 2540, total_loss: 0.22467951476573944, loss_1: 0.474853515625, loss_2: 0.12310791015625, loss_3: 0.00734710693359375
+[2025-02-01 21:48:55,697 INFO train.py line 211 2443] iter: 2550, total_loss: 0.059576161205768585, loss_1: 0.2413330078125, loss_2: 0.01166534423828125, loss_3: 0.021881103515625
+[2025-02-01 21:48:56,932 INFO train.py line 211 2443] iter: 2560, total_loss: 0.05329807102680206, loss_1: 0.1463623046875, loss_2: 0.0192718505859375, loss_3: 0.026031494140625
+[2025-02-01 21:48:58,189 INFO train.py line 211 2443] iter: 2570, total_loss: 0.07376067340373993, loss_1: 0.059173583984375, loss_2: 0.0232696533203125, loss_3: 0.069580078125
+[2025-02-01 21:48:59,469 INFO train.py line 211 2443] iter: 2580, total_loss: 0.13507841527462006, loss_1: 0.2607421875, loss_2: 0.2137451171875, loss_3: 0.0166015625
+[2025-02-01 21:49:00,725 INFO train.py line 211 2443] iter: 2590, total_loss: 0.1005348265171051, loss_1: 0.1536865234375, loss_2: 0.05755615234375, loss_3: 0.0299224853515625
+[2025-02-01 21:49:01,977 INFO train.py line 211 2443] iter: 2600, total_loss: 0.04390903562307358, loss_1: 0.050933837890625, loss_2: 0.0077056884765625, loss_3: 0.041290283203125
+[2025-02-01 21:49:03,267 INFO train.py line 211 2443] iter: 2610, total_loss: 0.09670364111661911, loss_1: 0.2159423828125, loss_2: 0.16455078125, loss_3: 0.0306854248046875
+[2025-02-01 21:49:04,542 INFO train.py line 211 2443] iter: 2620, total_loss: 0.07481699436903, loss_1: 0.1634521484375, loss_2: 0.034393310546875, loss_3: 0.0280914306640625
+[2025-02-01 21:49:05,814 INFO train.py line 211 2443] iter: 2630, total_loss: 0.07885817438364029, loss_1: 0.03076171875, loss_2: 0.01213836669921875, loss_3: 0.09881591796875
+[2025-02-01 21:49:07,084 INFO train.py line 211 2443] iter: 2640, total_loss: 0.04988185316324234, loss_1: 0.03424072265625, loss_2: 0.00478363037109375, loss_3: 0.0535888671875
+[2025-02-01 21:49:08,347 INFO train.py line 211 2443] iter: 2650, total_loss: 0.08592574298381805, loss_1: 0.27490234375, loss_2: 0.06298828125, loss_3: 0.022705078125
+[2025-02-01 21:49:09,592 INFO train.py line 211 2443] iter: 2660, total_loss: 0.04170554131269455, loss_1: 0.044219970703125, loss_2: 0.01806640625, loss_3: 0.037200927734375
+[2025-02-01 21:49:10,890 INFO train.py line 211 2443] iter: 2670, total_loss: 0.23919039964675903, loss_1: 0.333984375, loss_2: 0.302490234375, loss_3: 0.01491546630859375
+[2025-02-01 21:49:12,178 INFO train.py line 211 2443] iter: 2680, total_loss: 0.07837183028459549, loss_1: 0.232666015625, loss_2: 0.0296783447265625, loss_3: 0.01465606689453125
+[2025-02-01 21:49:13,468 INFO train.py line 211 2443] iter: 2690, total_loss: 0.2385738492012024, loss_1: 0.45166015625, loss_2: 0.07049560546875, loss_3: 0.01206207275390625
+[2025-02-01 21:49:14,756 INFO train.py line 211 2443] iter: 2700, total_loss: 0.039794035255908966, loss_1: 0.08148193359375, loss_2: 0.0109100341796875, loss_3: 0.0289306640625
+[2025-02-01 21:49:16,035 INFO train.py line 211 2443] iter: 2710, total_loss: 0.06736902892589569, loss_1: 0.257568359375, loss_2: 0.0239715576171875, loss_3: 0.01514434814453125
+[2025-02-01 21:49:17,288 INFO train.py line 211 2443] iter: 2720, total_loss: 0.040448449552059174, loss_1: 0.069580078125, loss_2: 0.006862640380859375, loss_3: 0.03277587890625
+[2025-02-01 21:49:18,552 INFO train.py line 211 2443] iter: 2730, total_loss: 0.04998205229640007, loss_1: 0.033416748046875, loss_2: 0.020904541015625, loss_3: 0.04949951171875
+[2025-02-01 21:49:19,820 INFO train.py line 211 2443] iter: 2740, total_loss: 0.06275686621665955, loss_1: 0.238525390625, loss_2: 0.019775390625, loss_3: 0.0123291015625
+[2025-02-01 21:49:21,056 INFO train.py line 211 2443] iter: 2750, total_loss: 0.06709632277488708, loss_1: 0.20458984375, loss_2: 0.0118255615234375, loss_3: 0.033172607421875
+[2025-02-01 21:49:22,291 INFO train.py line 211 2443] iter: 2760, total_loss: 0.07050235569477081, loss_1: 0.171630859375, loss_2: 0.08392333984375, loss_3: 0.0219573974609375
+[2025-02-01 21:49:23,560 INFO train.py line 211 2443] iter: 2770, total_loss: 0.13809072971343994, loss_1: 0.1619873046875, loss_2: 0.1446533203125, loss_3: 0.017547607421875
+[2025-02-01 21:49:24,849 INFO train.py line 211 2443] iter: 2780, total_loss: 0.0504349023103714, loss_1: 0.099609375, loss_2: 0.015716552734375, loss_3: 0.03021240234375
+[2025-02-01 21:49:26,114 INFO train.py line 211 2443] iter: 2790, total_loss: 0.07738806307315826, loss_1: 0.057861328125, loss_2: 0.023468017578125, loss_3: 0.0772705078125
+[2025-02-01 21:49:27,367 INFO train.py line 211 2443] iter: 2800, total_loss: 0.09084630757570267, loss_1: 0.208251953125, loss_2: 0.036590576171875, loss_3: 0.02862548828125
+[2025-02-01 21:49:28,639 INFO train.py line 211 2443] iter: 2810, total_loss: 0.05010095238685608, loss_1: 0.12481689453125, loss_2: 0.08062744140625, loss_3: 0.01551055908203125
+[2025-02-01 21:49:29,904 INFO train.py line 211 2443] iter: 2820, total_loss: 0.04548276960849762, loss_1: 0.08587646484375, loss_2: 0.01364898681640625, loss_3: 0.032501220703125
+[2025-02-01 21:49:31,171 INFO train.py line 211 2443] iter: 2830, total_loss: 0.04432208836078644, loss_1: 0.047515869140625, loss_2: 0.0174560546875, loss_3: 0.0399169921875
+[2025-02-01 21:49:32,465 INFO train.py line 211 2443] iter: 2840, total_loss: 0.032276250422000885, loss_1: 0.061431884765625, loss_2: 0.00951385498046875, loss_3: 0.0228424072265625
+[2025-02-01 21:49:33,719 INFO train.py line 211 2443] iter: 2850, total_loss: 0.05138425529003143, loss_1: 0.11309814453125, loss_2: 0.057220458984375, loss_3: 0.0199127197265625
+[2025-02-01 21:49:35,009 INFO train.py line 211 2443] iter: 2860, total_loss: 0.07757947593927383, loss_1: 0.04852294921875, loss_2: 0.01505279541015625, loss_3: 0.08197021484375
+[2025-02-01 21:49:36,289 INFO train.py line 211 2443] iter: 2870, total_loss: 0.04007710888981819, loss_1: 0.06768798828125, loss_2: 0.0218963623046875, loss_3: 0.03179931640625
+[2025-02-01 21:49:37,564 INFO train.py line 211 2443] iter: 2880, total_loss: 0.047507286071777344, loss_1: 0.0826416015625, loss_2: 0.06268310546875, loss_3: 0.0258941650390625
+[2025-02-01 21:49:38,814 INFO train.py line 211 2443] iter: 2890, total_loss: 0.03582799434661865, loss_1: 0.0928955078125, loss_2: 0.0199737548828125, loss_3: 0.016754150390625
+[2025-02-01 21:49:40,067 INFO train.py line 211 2443] iter: 2900, total_loss: 0.09231984615325928, loss_1: 0.248046875, loss_2: 0.132568359375, loss_3: 0.01253509521484375
+[2025-02-01 21:49:41,302 INFO train.py line 211 2443] iter: 2910, total_loss: 0.03579986095428467, loss_1: 0.046234130859375, loss_2: 0.01149749755859375, loss_3: 0.030364990234375
+[2025-02-01 21:49:42,603 INFO train.py line 211 2443] iter: 2920, total_loss: 0.04621893912553787, loss_1: 0.097412109375, loss_2: 0.015777587890625, loss_3: 0.033355712890625
+[2025-02-01 21:49:43,849 INFO train.py line 211 2443] iter: 2930, total_loss: 0.04559263586997986, loss_1: 0.057098388671875, loss_2: 0.0260162353515625, loss_3: 0.037933349609375
+[2025-02-01 21:49:45,108 INFO train.py line 211 2443] iter: 2940, total_loss: 0.05461496114730835, loss_1: 0.1756591796875, loss_2: 0.01336669921875, loss_3: 0.0261383056640625
+[2025-02-01 21:49:46,360 INFO train.py line 211 2443] iter: 2950, total_loss: 0.06063481420278549, loss_1: 0.1612548828125, loss_2: 0.08270263671875, loss_3: 0.0156402587890625
+[2025-02-01 21:49:47,647 INFO train.py line 211 2443] iter: 2960, total_loss: 0.045156482607126236, loss_1: 0.1180419921875, loss_2: 0.010955810546875, loss_3: 0.0230865478515625
+[2025-02-01 21:49:48,960 INFO train.py line 211 2443] iter: 2970, total_loss: 0.04728167504072189, loss_1: 0.048828125, loss_2: 0.0287017822265625, loss_3: 0.0411376953125
+[2025-02-01 21:49:50,247 INFO train.py line 211 2443] iter: 2980, total_loss: 0.13350602984428406, loss_1: 0.32763671875, loss_2: 0.09967041015625, loss_3: 0.00899505615234375
+[2025-02-01 21:49:51,524 INFO train.py line 211 2443] iter: 2990, total_loss: 0.03413920849561691, loss_1: 0.064453125, loss_2: 0.0250244140625, loss_3: 0.019561767578125
+[2025-02-01 21:49:52,764 INFO train.py line 211 2443] iter: 3000, total_loss: 0.08298793435096741, loss_1: 0.1297607421875, loss_2: 0.034881591796875, loss_3: 0.03533935546875
+[2025-02-01 21:49:54,024 INFO train.py line 211 2443] iter: 3010, total_loss: 0.056362368166446686, loss_1: 0.1055908203125, loss_2: 0.015655517578125, loss_3: 0.037689208984375
+[2025-02-01 21:49:55,254 INFO train.py line 211 2443] iter: 3020, total_loss: 0.07999370247125626, loss_1: 0.1405029296875, loss_2: 0.136962890625, loss_3: 0.040557861328125
+[2025-02-01 21:49:56,530 INFO train.py line 211 2443] iter: 3030, total_loss: 0.05889689177274704, loss_1: 0.127197265625, loss_2: 0.07928466796875, loss_3: 0.023956298828125
+[2025-02-01 21:49:57,812 INFO train.py line 211 2443] iter: 3040, total_loss: 0.04033632576465607, loss_1: 0.134765625, loss_2: 0.0131988525390625, loss_3: 0.0164337158203125
+[2025-02-01 21:49:59,088 INFO train.py line 211 2443] iter: 3050, total_loss: 0.2527737021446228, loss_1: 0.478515625, loss_2: 0.2091064453125, loss_3: 0.013397216796875
+[2025-02-01 21:50:00,357 INFO train.py line 211 2443] iter: 3060, total_loss: 0.037870198488235474, loss_1: 0.064697265625, loss_2: 0.0163116455078125, loss_3: 0.029296875
+[2025-02-01 21:50:01,596 INFO train.py line 211 2443] iter: 3070, total_loss: 0.057422734797000885, loss_1: 0.2286376953125, loss_2: 0.0274505615234375, loss_3: 0.01297760009765625
+[2025-02-01 21:50:02,824 INFO train.py line 211 2443] iter: 3080, total_loss: 0.08249972760677338, loss_1: 0.147705078125, loss_2: 0.08612060546875, loss_3: 0.04449462890625
+[2025-02-01 21:50:04,083 INFO train.py line 211 2443] iter: 3090, total_loss: 0.05858602002263069, loss_1: 0.0828857421875, loss_2: 0.0278778076171875, loss_3: 0.033721923828125
+[2025-02-01 21:50:05,340 INFO train.py line 211 2443] iter: 3100, total_loss: 0.05075328052043915, loss_1: 0.050689697265625, loss_2: 0.003536224365234375, loss_3: 0.05072021484375
+[2025-02-01 21:50:06,612 INFO train.py line 211 2443] iter: 3110, total_loss: 0.03486854210495949, loss_1: 0.05767822265625, loss_2: 0.01519775390625, loss_3: 0.02655029296875
+[2025-02-01 21:50:07,883 INFO train.py line 211 2443] iter: 3120, total_loss: 0.035376518964767456, loss_1: 0.05267333984375, loss_2: 0.017364501953125, loss_3: 0.0281982421875
+[2025-02-01 21:50:09,161 INFO train.py line 211 2443] iter: 3130, total_loss: 0.06319506466388702, loss_1: 0.12164306640625, loss_2: 0.11138916015625, loss_3: 0.02044677734375
+[2025-02-01 21:50:10,440 INFO train.py line 211 2443] iter: 3140, total_loss: 0.03145543485879898, loss_1: 0.0570068359375, loss_2: 0.022430419921875, loss_3: 0.0198211669921875
+[2025-02-01 21:50:11,687 INFO train.py line 211 2443] iter: 3150, total_loss: 0.07345592230558395, loss_1: 0.050689697265625, loss_2: 0.009521484375, loss_3: 0.0792236328125
+[2025-02-01 21:50:12,955 INFO train.py line 211 2443] iter: 3160, total_loss: 0.0627894178032875, loss_1: 0.2191162109375, loss_2: 0.01108551025390625, loss_3: 0.02593994140625
+[2025-02-01 21:50:14,212 INFO train.py line 211 2443] iter: 3170, total_loss: 0.08141496777534485, loss_1: 0.058929443359375, loss_2: 0.036773681640625, loss_3: 0.07928466796875
+[2025-02-01 21:50:15,498 INFO train.py line 211 2443] iter: 3180, total_loss: 0.07961241900920868, loss_1: 0.04986572265625, loss_2: 0.038604736328125, loss_3: 0.0772705078125
+[2025-02-01 21:50:16,752 INFO train.py line 211 2443] iter: 3190, total_loss: 0.19012758135795593, loss_1: 0.474609375, loss_2: 0.0693359375, loss_3: 0.010772705078125
+[2025-02-01 21:50:18,008 INFO train.py line 211 2443] iter: 3200, total_loss: 0.04558023065328598, loss_1: 0.0748291015625, loss_2: 0.00926971435546875, loss_3: 0.0372314453125
+[2025-02-01 21:50:19,283 INFO train.py line 211 2443] iter: 3210, total_loss: 0.04584493860602379, loss_1: 0.0582275390625, loss_2: 0.0109100341796875, loss_3: 0.0419921875
+[2025-02-01 21:50:20,531 INFO train.py line 211 2443] iter: 3220, total_loss: 0.06337568163871765, loss_1: 0.05059814453125, loss_2: 0.0234375, loss_3: 0.05908203125
+[2025-02-01 21:50:21,807 INFO train.py line 211 2443] iter: 3230, total_loss: 0.06095944344997406, loss_1: 0.097900390625, loss_2: 0.042327880859375, loss_3: 0.041229248046875
+[2025-02-01 21:50:23,097 INFO train.py line 211 2443] iter: 3240, total_loss: 0.07339175790548325, loss_1: 0.09295654296875, loss_2: 0.041229248046875, loss_3: 0.046173095703125
+[2025-02-01 21:50:24,360 INFO train.py line 211 2443] iter: 3250, total_loss: 0.07899375259876251, loss_1: 0.27392578125, loss_2: 0.1322021484375, loss_3: 0.01461029052734375
+[2025-02-01 21:50:25,625 INFO train.py line 211 2443] iter: 3260, total_loss: 0.05658740550279617, loss_1: 0.07720947265625, loss_2: 0.0145263671875, loss_3: 0.047027587890625
+[2025-02-01 21:50:26,897 INFO train.py line 211 2443] iter: 3270, total_loss: 0.07401052117347717, loss_1: 0.03826904296875, loss_2: 0.0291748046875, loss_3: 0.07745361328125
+[2025-02-01 21:50:28,158 INFO train.py line 211 2443] iter: 3280, total_loss: 0.03626668453216553, loss_1: 0.06524658203125, loss_2: 0.03662109375, loss_3: 0.020355224609375
+[2025-02-01 21:50:29,419 INFO train.py line 211 2443] iter: 3290, total_loss: 0.061956003308296204, loss_1: 0.2110595703125, loss_2: 0.0196075439453125, loss_3: 0.01983642578125
+[2025-02-01 21:50:30,707 INFO train.py line 211 2443] iter: 3300, total_loss: 0.04563254490494728, loss_1: 0.1502685546875, loss_2: 0.01235198974609375, loss_3: 0.0174713134765625
+[2025-02-01 21:50:31,970 INFO train.py line 211 2443] iter: 3310, total_loss: 0.050164371728897095, loss_1: 0.06878662109375, loss_2: 0.0175628662109375, loss_3: 0.042755126953125
+[2025-02-01 21:50:33,251 INFO train.py line 211 2443] iter: 3320, total_loss: 0.05344831198453903, loss_1: 0.1383056640625, loss_2: 0.015106201171875, loss_3: 0.0252532958984375
+[2025-02-01 21:50:34,537 INFO train.py line 211 2443] iter: 3330, total_loss: 0.11356247961521149, loss_1: 0.1961669921875, loss_2: 0.06884765625, loss_3: 0.0162811279296875
+[2025-02-01 21:50:35,812 INFO train.py line 211 2443] iter: 3340, total_loss: 0.06578893214464188, loss_1: 0.1019287109375, loss_2: 0.0909423828125, loss_3: 0.03070068359375
+[2025-02-01 21:50:37,104 INFO train.py line 211 2443] iter: 3350, total_loss: 0.1053062379360199, loss_1: 0.39697265625, loss_2: 0.08624267578125, loss_3: 0.01180267333984375
+[2025-02-01 21:50:38,357 INFO train.py line 211 2443] iter: 3360, total_loss: 0.03695158660411835, loss_1: 0.03912353515625, loss_2: 0.01035308837890625, loss_3: 0.0343017578125
+[2025-02-01 21:50:39,600 INFO train.py line 211 2443] iter: 3370, total_loss: 0.04821639880537987, loss_1: 0.03753662109375, loss_2: 0.02294921875, loss_3: 0.045989990234375
+[2025-02-01 21:50:40,869 INFO train.py line 211 2443] iter: 3380, total_loss: 0.04249085858464241, loss_1: 0.11572265625, loss_2: 0.005584716796875, loss_3: 0.01806640625
+[2025-02-01 21:50:42,138 INFO train.py line 211 2443] iter: 3390, total_loss: 0.03472955897450447, loss_1: 0.049041748046875, loss_2: 0.0106964111328125, loss_3: 0.0289459228515625
+[2025-02-01 21:50:43,441 INFO train.py line 211 2443] iter: 3400, total_loss: 0.08687707781791687, loss_1: 0.2164306640625, loss_2: 0.078125, loss_3: 0.019683837890625
+[2025-02-01 21:50:44,690 INFO train.py line 211 2443] iter: 3410, total_loss: 0.07341522723436356, loss_1: 0.295654296875, loss_2: 0.0105743408203125, loss_3: 0.0236358642578125
+[2025-02-01 21:50:45,935 INFO train.py line 211 2443] iter: 3420, total_loss: 0.049687303602695465, loss_1: 0.1529541015625, loss_2: 0.0172271728515625, loss_3: 0.0195465087890625
+[2025-02-01 21:50:47,188 INFO train.py line 211 2443] iter: 3430, total_loss: 0.06969213485717773, loss_1: 0.10723876953125, loss_2: 0.0535888671875, loss_3: 0.033477783203125
+[2025-02-01 21:50:48,444 INFO train.py line 211 2443] iter: 3440, total_loss: 0.03818732500076294, loss_1: 0.0628662109375, loss_2: 0.0276031494140625, loss_3: 0.0269317626953125
+[2025-02-01 21:50:49,723 INFO train.py line 211 2443] iter: 3450, total_loss: 0.03908658027648926, loss_1: 0.03924560546875, loss_2: 0.0120849609375, loss_3: 0.0367431640625
+[2025-02-01 21:50:50,979 INFO train.py line 211 2443] iter: 3460, total_loss: 0.07184287905693054, loss_1: 0.2296142578125, loss_2: 0.0105743408203125, loss_3: 0.0279541015625
+[2025-02-01 21:50:52,241 INFO train.py line 211 2443] iter: 3470, total_loss: 0.05326322466135025, loss_1: 0.04241943359375, loss_2: 0.00389862060546875, loss_3: 0.056121826171875
+[2025-02-01 21:50:53,487 INFO train.py line 211 2443] iter: 3480, total_loss: 0.029818490147590637, loss_1: 0.040679931640625, loss_2: 0.02069091796875, loss_3: 0.0206298828125
+[2025-02-01 21:50:54,713 INFO train.py line 211 2443] iter: 3490, total_loss: 0.08877391368150711, loss_1: 0.167236328125, loss_2: 0.1649169921875, loss_3: 0.032928466796875
+[2025-02-01 21:50:55,968 INFO train.py line 211 2443] iter: 3500, total_loss: 0.06687666475772858, loss_1: 0.042327880859375, loss_2: 0.0160980224609375, loss_3: 0.0694580078125
+[2025-02-01 21:50:57,272 INFO train.py line 211 2443] iter: 3510, total_loss: 0.08414286375045776, loss_1: 0.26416015625, loss_2: 0.051605224609375, loss_3: 0.0085296630859375
+[2025-02-01 21:50:58,543 INFO train.py line 211 2443] iter: 3520, total_loss: 0.05058525875210762, loss_1: 0.1429443359375, loss_2: 0.036895751953125, loss_3: 0.0186309814453125
+[2025-02-01 21:50:59,832 INFO train.py line 211 2443] iter: 3530, total_loss: 0.10888413339853287, loss_1: 0.155029296875, loss_2: 0.1422119140625, loss_3: 0.01214599609375
+[2025-02-01 21:51:01,135 INFO train.py line 211 2443] iter: 3540, total_loss: 0.0394219346344471, loss_1: 0.06536865234375, loss_2: 0.0178375244140625, loss_3: 0.03155517578125
+[2025-02-01 21:51:02,438 INFO train.py line 211 2443] iter: 3550, total_loss: 0.09979776293039322, loss_1: 0.316162109375, loss_2: 0.0292816162109375, loss_3: 0.01560211181640625
+[2025-02-01 21:51:03,702 INFO train.py line 211 2443] iter: 3560, total_loss: 0.06659670174121857, loss_1: 0.043243408203125, loss_2: 0.035064697265625, loss_3: 0.06524658203125
+[2025-02-01 21:51:04,979 INFO train.py line 211 2443] iter: 3570, total_loss: 0.039249151945114136, loss_1: 0.05828857421875, loss_2: 0.023529052734375, loss_3: 0.0298309326171875
+[2025-02-01 21:51:06,263 INFO train.py line 211 2443] iter: 3580, total_loss: 0.0372510626912117, loss_1: 0.05426025390625, loss_2: 0.0102386474609375, loss_3: 0.02923583984375
+[2025-02-01 21:51:07,524 INFO train.py line 211 2443] iter: 3590, total_loss: 0.04653184860944748, loss_1: 0.08331298828125, loss_2: 0.0244140625, loss_3: 0.0269317626953125
+[2025-02-01 21:51:08,765 INFO train.py line 211 2443] iter: 3600, total_loss: 0.0776415765285492, loss_1: 0.274658203125, loss_2: 0.0404052734375, loss_3: 0.018707275390625
+[2025-02-01 21:51:10,040 INFO train.py line 211 2443] iter: 3610, total_loss: 0.04833932965993881, loss_1: 0.064208984375, loss_2: 0.039398193359375, loss_3: 0.03448486328125
+[2025-02-01 21:51:11,296 INFO train.py line 211 2443] iter: 3620, total_loss: 0.09384976327419281, loss_1: 0.216796875, loss_2: 0.095947265625, loss_3: 0.0150146484375
+[2025-02-01 21:51:12,593 INFO train.py line 211 2443] iter: 3630, total_loss: 0.05113869532942772, loss_1: 0.0977783203125, loss_2: 0.0606689453125, loss_3: 0.021820068359375
+[2025-02-01 21:51:13,856 INFO train.py line 211 2443] iter: 3640, total_loss: 0.08495567739009857, loss_1: 0.32275390625, loss_2: 0.04034423828125, loss_3: 0.0084381103515625
+[2025-02-01 21:51:15,127 INFO train.py line 211 2443] iter: 3650, total_loss: 0.06430546939373016, loss_1: 0.26318359375, loss_2: 0.0124053955078125, loss_3: 0.014404296875
+[2025-02-01 21:51:16,345 INFO train.py line 211 2443] iter: 3660, total_loss: 0.055040787905454636, loss_1: 0.042449951171875, loss_2: 0.0305633544921875, loss_3: 0.05157470703125
+[2025-02-01 21:51:17,635 INFO train.py line 211 2443] iter: 3670, total_loss: 0.2298998385667801, loss_1: 0.397705078125, loss_2: 0.386474609375, loss_3: 0.01473236083984375
+[2025-02-01 21:51:18,907 INFO train.py line 211 2443] iter: 3680, total_loss: 0.03438021242618561, loss_1: 0.03326416015625, loss_2: 0.0088348388671875, loss_3: 0.0325927734375
+[2025-02-01 21:51:20,203 INFO train.py line 211 2443] iter: 3690, total_loss: 0.08901593089103699, loss_1: 0.0535888671875, loss_2: 0.046966552734375, loss_3: 0.08740234375
+[2025-02-01 21:51:21,464 INFO train.py line 211 2443] iter: 3700, total_loss: 0.046388447284698486, loss_1: 0.10772705078125, loss_2: 0.04254150390625, loss_3: 0.023834228515625
+[2025-02-01 21:51:22,726 INFO train.py line 211 2443] iter: 3710, total_loss: 0.12110979110002518, loss_1: 0.322509765625, loss_2: 0.0275115966796875, loss_3: 0.01282501220703125
+[2025-02-01 21:51:23,996 INFO train.py line 211 2443] iter: 3720, total_loss: 0.043645188212394714, loss_1: 0.1131591796875, loss_2: 0.003429412841796875, loss_3: 0.0266265869140625
+[2025-02-01 21:51:25,251 INFO train.py line 211 2443] iter: 3730, total_loss: 0.05817912891507149, loss_1: 0.0249786376953125, loss_2: 0.014434814453125, loss_3: 0.0704345703125
+[2025-02-01 21:51:26,501 INFO train.py line 211 2443] iter: 3740, total_loss: 0.0928279235959053, loss_1: 0.05303955078125, loss_2: 0.0391845703125, loss_3: 0.09429931640625
+[2025-02-01 21:51:27,746 INFO train.py line 211 2443] iter: 3750, total_loss: 0.07059262692928314, loss_1: 0.04180908203125, loss_2: 0.016754150390625, loss_3: 0.07513427734375
+[2025-02-01 21:51:28,991 INFO train.py line 211 2443] iter: 3760, total_loss: 0.04179651290178299, loss_1: 0.055511474609375, loss_2: 0.0179595947265625, loss_3: 0.0352783203125
+[2025-02-01 21:51:30,256 INFO train.py line 211 2443] iter: 3770, total_loss: 0.05559410899877548, loss_1: 0.0294189453125, loss_2: 0.00724029541015625, loss_3: 0.07135009765625
+[2025-02-01 21:51:31,530 INFO train.py line 211 2443] iter: 3780, total_loss: 0.03662138059735298, loss_1: 0.045654296875, loss_2: 0.0145263671875, loss_3: 0.031768798828125
+[2025-02-01 21:51:32,780 INFO train.py line 211 2443] iter: 3790, total_loss: 0.05294866859912872, loss_1: 0.2110595703125, loss_2: 0.007122039794921875, loss_3: 0.012969970703125
+[2025-02-01 21:51:34,089 INFO train.py line 211 2443] iter: 3800, total_loss: 0.06054684519767761, loss_1: 0.1431884765625, loss_2: 0.066162109375, loss_3: 0.01512908935546875
+[2025-02-01 21:51:35,360 INFO train.py line 211 2443] iter: 3810, total_loss: 0.034219034016132355, loss_1: 0.055755615234375, loss_2: 0.00736236572265625, loss_3: 0.0280303955078125
+[2025-02-01 21:51:36,646 INFO train.py line 211 2443] iter: 3820, total_loss: 0.07089141011238098, loss_1: 0.2056884765625, loss_2: 0.025238037109375, loss_3: 0.0278167724609375
+[2025-02-01 21:51:37,899 INFO train.py line 211 2443] iter: 3830, total_loss: 0.08390014618635178, loss_1: 0.06390380859375, loss_2: 0.027130126953125, loss_3: 0.08331298828125
+[2025-02-01 21:51:39,143 INFO train.py line 211 2443] iter: 3840, total_loss: 0.06256861984729767, loss_1: 0.1917724609375, loss_2: 0.0252838134765625, loss_3: 0.0268402099609375
+[2025-02-01 21:51:40,391 INFO train.py line 211 2443] iter: 3850, total_loss: 0.05487729609012604, loss_1: 0.09881591796875, loss_2: 0.00936126708984375, loss_3: 0.04107666015625
+[2025-02-01 21:51:41,685 INFO train.py line 211 2443] iter: 3860, total_loss: 0.0470016673207283, loss_1: 0.121826171875, loss_2: 0.01357269287109375, loss_3: 0.0219879150390625
+[2025-02-01 21:51:42,962 INFO train.py line 211 2443] iter: 3870, total_loss: 0.04292573034763336, loss_1: 0.02520751953125, loss_2: 0.020477294921875, loss_3: 0.0418701171875
+[2025-02-01 21:51:44,239 INFO train.py line 211 2443] iter: 3880, total_loss: 0.05464299023151398, loss_1: 0.093994140625, loss_2: 0.07257080078125, loss_3: 0.0279693603515625
+[2025-02-01 21:51:45,499 INFO train.py line 211 2443] iter: 3890, total_loss: 0.03261017054319382, loss_1: 0.055511474609375, loss_2: 0.023834228515625, loss_3: 0.02178955078125
+[2025-02-01 21:51:46,750 INFO train.py line 211 2443] iter: 3900, total_loss: 0.030436638742685318, loss_1: 0.03521728515625, loss_2: 0.0171356201171875, loss_3: 0.0248565673828125
+[2025-02-01 21:51:48,015 INFO train.py line 211 2443] iter: 3910, total_loss: 0.06973113864660263, loss_1: 0.037689208984375, loss_2: 0.0056915283203125, loss_3: 0.07733154296875
+[2025-02-01 21:51:49,269 INFO train.py line 211 2443] iter: 3920, total_loss: 0.057436034083366394, loss_1: 0.0853271484375, loss_2: 0.059906005859375, loss_3: 0.038604736328125
+[2025-02-01 21:51:50,504 INFO train.py line 211 2443] iter: 3930, total_loss: 0.028882760554552078, loss_1: 0.057830810546875, loss_2: 0.0288543701171875, loss_3: 0.0175933837890625
+[2025-02-01 21:51:51,749 INFO train.py line 211 2443] iter: 3940, total_loss: 0.05536210164427757, loss_1: 0.1275634765625, loss_2: 0.01250457763671875, loss_3: 0.033233642578125
+[2025-02-01 21:51:52,996 INFO train.py line 211 2443] iter: 3950, total_loss: 0.0893598198890686, loss_1: 0.05133056640625, loss_2: 0.00540924072265625, loss_3: 0.10089111328125
+[2025-02-01 21:51:54,244 INFO train.py line 211 2443] iter: 3960, total_loss: 0.07758983224630356, loss_1: 0.0936279296875, loss_2: 0.056060791015625, loss_3: 0.0294952392578125
+[2025-02-01 21:51:55,509 INFO train.py line 211 2443] iter: 3970, total_loss: 0.05577901750802994, loss_1: 0.0467529296875, loss_2: 0.0275421142578125, loss_3: 0.051422119140625
+[2025-02-01 21:51:56,778 INFO train.py line 211 2443] iter: 3980, total_loss: 0.0538964606821537, loss_1: 0.041473388671875, loss_2: 0.00902557373046875, loss_3: 0.055267333984375
+[2025-02-01 21:51:58,056 INFO train.py line 211 2443] iter: 3990, total_loss: 0.029846705496311188, loss_1: 0.061431884765625, loss_2: 0.01187896728515625, loss_3: 0.018829345703125
+[2025-02-01 21:51:59,325 INFO train.py line 211 2443] iter: 4000, total_loss: 0.15327002108097076, loss_1: 0.314697265625, loss_2: 0.0439453125, loss_3: 0.01336669921875
+[2025-02-01 21:52:00,604 INFO train.py line 211 2443] iter: 4010, total_loss: 0.2868391275405884, loss_1: 0.359619140625, loss_2: 0.35400390625, loss_3: 0.00940704345703125
+[2025-02-01 21:52:01,890 INFO train.py line 211 2443] iter: 4020, total_loss: 0.037557877600193024, loss_1: 0.03802490234375, loss_2: 0.0184783935546875, loss_3: 0.032806396484375
+[2025-02-01 21:52:03,146 INFO train.py line 211 2443] iter: 4030, total_loss: 0.06833919137716293, loss_1: 0.269287109375, loss_2: 0.0032634735107421875, loss_3: 0.0177764892578125
+[2025-02-01 21:52:04,413 INFO train.py line 211 2443] iter: 4040, total_loss: 0.049159202724695206, loss_1: 0.152587890625, loss_2: 0.0140228271484375, loss_3: 0.0185089111328125
+[2025-02-01 21:52:05,732 INFO train.py line 211 2443] iter: 4050, total_loss: 0.07872319221496582, loss_1: 0.07061767578125, loss_2: 0.0238037109375, loss_3: 0.07586669921875
+[2025-02-01 21:52:07,005 INFO train.py line 211 2443] iter: 4060, total_loss: 0.04492569714784622, loss_1: 0.09832763671875, loss_2: 0.0147705078125, loss_3: 0.0267181396484375
+[2025-02-01 21:52:08,262 INFO train.py line 211 2443] iter: 4070, total_loss: 0.13976828753948212, loss_1: 0.57275390625, loss_2: 0.01366424560546875, loss_3: 0.03753662109375
+[2025-02-01 21:52:09,552 INFO train.py line 211 2443] iter: 4080, total_loss: 0.11105994135141373, loss_1: 0.3251953125, loss_2: 0.0286407470703125, loss_3: 0.00687408447265625
+[2025-02-01 21:52:10,806 INFO train.py line 211 2443] iter: 4090, total_loss: 0.05466247349977493, loss_1: 0.11712646484375, loss_2: 0.0556640625, loss_3: 0.0207366943359375
+[2025-02-01 21:52:12,088 INFO train.py line 211 2443] iter: 4100, total_loss: 0.07279602438211441, loss_1: 0.1878662109375, loss_2: 0.02557373046875, loss_3: 0.0171051025390625
+[2025-02-01 21:52:13,348 INFO train.py line 211 2443] iter: 4110, total_loss: 0.03780809044837952, loss_1: 0.05767822265625, loss_2: 0.030670166015625, loss_3: 0.0254974365234375
+[2025-02-01 21:52:14,623 INFO train.py line 211 2443] iter: 4120, total_loss: 0.06390360742807388, loss_1: 0.1888427734375, loss_2: 0.0212860107421875, loss_3: 0.032196044921875
+[2025-02-01 21:52:15,932 INFO train.py line 211 2443] iter: 4130, total_loss: 0.07924734801054001, loss_1: 0.050018310546875, loss_2: 0.04412841796875, loss_3: 0.07330322265625
+[2025-02-01 21:52:17,214 INFO train.py line 211 2443] iter: 4140, total_loss: 0.1070261225104332, loss_1: 0.2406005859375, loss_2: 0.22216796875, loss_3: 0.01715087890625
+[2025-02-01 21:52:18,488 INFO train.py line 211 2443] iter: 4150, total_loss: 0.04038700461387634, loss_1: 0.07208251953125, loss_2: 0.025390625, loss_3: 0.026214599609375
+[2025-02-01 21:52:19,766 INFO train.py line 211 2443] iter: 4160, total_loss: 0.06808745115995407, loss_1: 0.16162109375, loss_2: 0.0712890625, loss_3: 0.02508544921875
+[2025-02-01 21:52:21,030 INFO train.py line 211 2443] iter: 4170, total_loss: 0.04542124643921852, loss_1: 0.10980224609375, loss_2: 0.0236053466796875, loss_3: 0.02288818359375
+[2025-02-01 21:52:22,310 INFO train.py line 211 2443] iter: 4180, total_loss: 0.08585269749164581, loss_1: 0.2203369140625, loss_2: 0.07904052734375, loss_3: 0.0162506103515625
+[2025-02-01 21:52:23,606 INFO train.py line 211 2443] iter: 4190, total_loss: 0.04168786108493805, loss_1: 0.1292724609375, loss_2: 0.00884246826171875, loss_3: 0.0150909423828125
+[2025-02-01 21:52:24,864 INFO train.py line 211 2443] iter: 4200, total_loss: 0.09056426584720612, loss_1: 0.195068359375, loss_2: 0.1734619140625, loss_3: 0.029571533203125
+[2025-02-01 21:52:26,136 INFO train.py line 211 2443] iter: 4210, total_loss: 0.08747359365224838, loss_1: 0.2841796875, loss_2: 0.05670166015625, loss_3: 0.00914764404296875
+[2025-02-01 21:52:27,384 INFO train.py line 211 2443] iter: 4220, total_loss: 0.06221752613782883, loss_1: 0.197998046875, loss_2: 0.05462646484375, loss_3: 0.0238189697265625
+[2025-02-01 21:52:28,659 INFO train.py line 211 2443] iter: 4230, total_loss: 0.06465114653110504, loss_1: 0.10986328125, loss_2: 0.10198974609375, loss_3: 0.0264739990234375
+[2025-02-01 21:52:29,933 INFO train.py line 211 2443] iter: 4240, total_loss: 0.17963473498821259, loss_1: 0.397216796875, loss_2: 0.298095703125, loss_3: 0.00839996337890625
+[2025-02-01 21:52:31,173 INFO train.py line 211 2443] iter: 4250, total_loss: 0.07406710833311081, loss_1: 0.26123046875, loss_2: 0.028839111328125, loss_3: 0.01248931884765625
+[2025-02-01 21:52:32,423 INFO train.py line 211 2443] iter: 4260, total_loss: 0.06288909167051315, loss_1: 0.1356201171875, loss_2: 0.08404541015625, loss_3: 0.027618408203125
+[2025-02-01 21:52:33,673 INFO train.py line 211 2443] iter: 4270, total_loss: 0.03462950512766838, loss_1: 0.10650634765625, loss_2: 0.00699615478515625, loss_3: 0.017059326171875
+[2025-02-01 21:52:34,980 INFO train.py line 211 2443] iter: 4280, total_loss: 0.05448312312364578, loss_1: 0.05322265625, loss_2: 0.0345458984375, loss_3: 0.048004150390625
+[2025-02-01 21:52:36,230 INFO train.py line 211 2443] iter: 4290, total_loss: 0.08947442471981049, loss_1: 0.380859375, loss_2: 0.0256195068359375, loss_3: 0.021148681640625
+[2025-02-01 21:52:37,488 INFO train.py line 211 2443] iter: 4300, total_loss: 0.05724409967660904, loss_1: 0.1605224609375, loss_2: 0.039306640625, loss_3: 0.0191650390625
+[2025-02-01 21:52:38,757 INFO train.py line 211 2443] iter: 4310, total_loss: 0.07742319256067276, loss_1: 0.2000732421875, loss_2: 0.025146484375, loss_3: 0.01453399658203125
+[2025-02-01 21:52:40,039 INFO train.py line 211 2443] iter: 4320, total_loss: 0.22240492701530457, loss_1: 0.4697265625, loss_2: 0.0457763671875, loss_3: 0.010498046875
+[2025-02-01 21:52:41,283 INFO train.py line 211 2443] iter: 4330, total_loss: 0.05846746265888214, loss_1: 0.1839599609375, loss_2: 0.044403076171875, loss_3: 0.015777587890625
+[2025-02-01 21:52:42,548 INFO train.py line 211 2443] iter: 4340, total_loss: 0.07697787135839462, loss_1: 0.2049560546875, loss_2: 0.0758056640625, loss_3: 0.029571533203125
+[2025-02-01 21:52:43,784 INFO train.py line 211 2443] iter: 4350, total_loss: 0.03435155004262924, loss_1: 0.075927734375, loss_2: 0.0033359527587890625, loss_3: 0.02349853515625
+[2025-02-01 21:52:45,036 INFO train.py line 211 2443] iter: 4360, total_loss: 0.09681326150894165, loss_1: 0.218017578125, loss_2: 0.19091796875, loss_3: 0.01544952392578125
+[2025-02-01 21:52:46,317 INFO train.py line 211 2443] iter: 4370, total_loss: 0.1267254650592804, loss_1: 0.2374267578125, loss_2: 0.0860595703125, loss_3: 0.01451873779296875
+[2025-02-01 21:52:47,602 INFO train.py line 211 2443] iter: 4380, total_loss: 0.056386642158031464, loss_1: 0.086181640625, loss_2: 0.02313232421875, loss_3: 0.0259246826171875
+[2025-02-01 21:52:48,893 INFO train.py line 211 2443] iter: 4390, total_loss: 0.08051953464746475, loss_1: 0.314697265625, loss_2: 0.017059326171875, loss_3: 0.0086212158203125
+[2025-02-01 21:52:50,188 INFO train.py line 211 2443] iter: 4400, total_loss: 0.13638432323932648, loss_1: 0.197021484375, loss_2: 0.1046142578125, loss_3: 0.0203094482421875
+[2025-02-01 21:52:51,432 INFO train.py line 211 2443] iter: 4410, total_loss: 0.06133792921900749, loss_1: 0.05950927734375, loss_2: 0.02752685546875, loss_3: 0.05615234375
+[2025-02-01 21:52:52,708 INFO train.py line 211 2443] iter: 4420, total_loss: 0.06732077896595001, loss_1: 0.211669921875, loss_2: 0.04742431640625, loss_3: 0.0167999267578125
+[2025-02-01 21:52:53,968 INFO train.py line 211 2443] iter: 4430, total_loss: 0.04269465059041977, loss_1: 0.13818359375, loss_2: 0.01323699951171875, loss_3: 0.01898193359375
+[2025-02-01 21:52:55,225 INFO train.py line 211 2443] iter: 4440, total_loss: 0.049434907734394073, loss_1: 0.05078125, loss_2: 0.04461669921875, loss_3: 0.03826904296875
+[2025-02-01 21:52:56,495 INFO train.py line 211 2443] iter: 4450, total_loss: 0.04230519011616707, loss_1: 0.04095458984375, loss_2: 0.01136016845703125, loss_3: 0.04058837890625
+[2025-02-01 21:52:57,734 INFO train.py line 211 2443] iter: 4460, total_loss: 0.18854855000972748, loss_1: 0.60205078125, loss_2: 0.1400146484375, loss_3: 0.04949951171875
+[2025-02-01 21:52:59,026 INFO train.py line 211 2443] iter: 4470, total_loss: 0.11912830173969269, loss_1: 0.2388916015625, loss_2: 0.215576171875, loss_3: 0.0198974609375
+[2025-02-01 21:53:00,252 INFO train.py line 211 2443] iter: 4480, total_loss: 0.05164099857211113, loss_1: 0.04620361328125, loss_2: 0.026123046875, loss_3: 0.047515869140625
+[2025-02-01 21:53:01,508 INFO train.py line 211 2443] iter: 4490, total_loss: 0.04723374545574188, loss_1: 0.0828857421875, loss_2: 0.01203155517578125, loss_3: 0.036529541015625
+[2025-02-01 21:53:02,806 INFO train.py line 211 2443] iter: 4500, total_loss: 0.0778694748878479, loss_1: 0.038177490234375, loss_2: 0.025909423828125, loss_3: 0.0853271484375
+[2025-02-01 21:53:04,082 INFO train.py line 211 2443] iter: 4510, total_loss: 0.07163270562887192, loss_1: 0.120361328125, loss_2: 0.03497314453125, loss_3: 0.0284423828125
+[2025-02-01 21:53:05,369 INFO train.py line 211 2443] iter: 4520, total_loss: 0.03435567021369934, loss_1: 0.05096435546875, loss_2: 0.01003265380859375, loss_3: 0.0287628173828125
+[2025-02-01 21:53:06,653 INFO train.py line 211 2443] iter: 4530, total_loss: 0.05336284264922142, loss_1: 0.1859130859375, loss_2: 0.033050537109375, loss_3: 0.01557159423828125
+[2025-02-01 21:53:07,937 INFO train.py line 211 2443] iter: 4540, total_loss: 0.06926601380109787, loss_1: 0.07623291015625, loss_2: 0.06463623046875, loss_3: 0.0518798828125
+[2025-02-01 21:53:09,219 INFO train.py line 211 2443] iter: 4550, total_loss: 0.06578298658132553, loss_1: 0.28271484375, loss_2: 0.0089263916015625, loss_3: 0.0082244873046875
+[2025-02-01 21:53:10,463 INFO train.py line 211 2443] iter: 4560, total_loss: 0.05539379268884659, loss_1: 0.096923828125, loss_2: 0.01465606689453125, loss_3: 0.041534423828125
+[2025-02-01 21:53:11,715 INFO train.py line 211 2443] iter: 4570, total_loss: 0.0367521271109581, loss_1: 0.0382080078125, loss_2: 0.01214599609375, loss_3: 0.033447265625
+[2025-02-01 21:53:13,021 INFO train.py line 211 2443] iter: 4580, total_loss: 0.04657356068491936, loss_1: 0.057281494140625, loss_2: 0.049163818359375, loss_3: 0.032135009765625
+[2025-02-01 21:53:14,322 INFO train.py line 211 2443] iter: 4590, total_loss: 0.06432478874921799, loss_1: 0.1868896484375, loss_2: 0.052032470703125, loss_3: 0.033172607421875
+[2025-02-01 21:53:15,589 INFO train.py line 211 2443] iter: 4600, total_loss: 0.04618527740240097, loss_1: 0.1444091796875, loss_2: 0.01126861572265625, loss_3: 0.017730712890625
+[2025-02-01 21:53:16,879 INFO train.py line 211 2443] iter: 4610, total_loss: 0.04090327024459839, loss_1: 0.046478271484375, loss_2: 0.0063629150390625, loss_3: 0.03875732421875
+[2025-02-01 21:53:18,139 INFO train.py line 211 2443] iter: 4620, total_loss: 0.08056572079658508, loss_1: 0.302734375, loss_2: 0.0650634765625, loss_3: 0.0171356201171875
+[2025-02-01 21:53:19,432 INFO train.py line 211 2443] iter: 4630, total_loss: 0.08424783498048782, loss_1: 0.3291015625, loss_2: 0.0650634765625, loss_3: 0.0113677978515625
+[2025-02-01 21:53:20,712 INFO train.py line 211 2443] iter: 4640, total_loss: 0.03881911188364029, loss_1: 0.04656982421875, loss_2: 0.00908660888671875, loss_3: 0.03497314453125
+[2025-02-01 21:53:21,993 INFO train.py line 211 2443] iter: 4650, total_loss: 0.057595714926719666, loss_1: 0.224365234375, loss_2: 0.031707763671875, loss_3: 0.011016845703125
+[2025-02-01 21:53:23,281 INFO train.py line 211 2443] iter: 4660, total_loss: 0.08258748799562454, loss_1: 0.2122802734375, loss_2: 0.12078857421875, loss_3: 0.0188446044921875
+[2025-02-01 21:53:24,563 INFO train.py line 211 2443] iter: 4670, total_loss: 0.07066130638122559, loss_1: 0.1878662109375, loss_2: 0.0731201171875, loss_3: 0.0229949951171875
+[2025-02-01 21:53:25,867 INFO train.py line 211 2443] iter: 4680, total_loss: 0.031130962073802948, loss_1: 0.07489013671875, loss_2: 0.016357421875, loss_3: 0.01751708984375
+[2025-02-01 21:53:27,136 INFO train.py line 211 2443] iter: 4690, total_loss: 0.0551321767270565, loss_1: 0.03631591796875, loss_2: 0.0112457275390625, loss_3: 0.05755615234375
+[2025-02-01 21:53:28,430 INFO train.py line 211 2443] iter: 4700, total_loss: 0.052631303668022156, loss_1: 0.04144287109375, loss_2: 0.04034423828125, loss_3: 0.046661376953125
+[2025-02-01 21:53:29,693 INFO train.py line 211 2443] iter: 4710, total_loss: 0.05410194396972656, loss_1: 0.17529296875, loss_2: 0.0283203125, loss_3: 0.016998291015625
+[2025-02-01 21:53:30,967 INFO train.py line 211 2443] iter: 4720, total_loss: 0.028930429369211197, loss_1: 0.055328369140625, loss_2: 0.0298004150390625, loss_3: 0.01605224609375
+[2025-02-01 21:53:32,232 INFO train.py line 211 2443] iter: 4730, total_loss: 0.056870222091674805, loss_1: 0.038848876953125, loss_2: 0.014190673828125, loss_3: 0.05859375
+[2025-02-01 21:53:33,512 INFO train.py line 211 2443] iter: 4740, total_loss: 0.0453038215637207, loss_1: 0.03277587890625, loss_2: 0.0145111083984375, loss_3: 0.045440673828125
+[2025-02-01 21:53:34,813 INFO train.py line 211 2443] iter: 4750, total_loss: 0.05816946551203728, loss_1: 0.052490234375, loss_2: 0.052581787109375, loss_3: 0.046966552734375
+[2025-02-01 21:53:36,069 INFO train.py line 211 2443] iter: 4760, total_loss: 0.06544899940490723, loss_1: 0.037628173828125, loss_2: 0.019287109375, loss_3: 0.0706787109375
+[2025-02-01 21:53:37,342 INFO train.py line 211 2443] iter: 4770, total_loss: 0.04171290248632431, loss_1: 0.06524658203125, loss_2: 0.050140380859375, loss_3: 0.0249786376953125
+[2025-02-01 21:53:38,620 INFO train.py line 211 2443] iter: 4780, total_loss: 0.04175543412566185, loss_1: 0.05291748046875, loss_2: 0.0230560302734375, loss_3: 0.034637451171875
+[2025-02-01 21:53:39,911 INFO train.py line 211 2443] iter: 4790, total_loss: 0.07595063745975494, loss_1: 0.117919921875, loss_2: 0.06927490234375, loss_3: 0.0160064697265625
+[2025-02-01 21:53:41,177 INFO train.py line 211 2443] iter: 4800, total_loss: 0.046037059277296066, loss_1: 0.130615234375, loss_2: 0.007083892822265625, loss_3: 0.0180206298828125
+[2025-02-01 21:53:42,433 INFO train.py line 211 2443] iter: 4810, total_loss: 0.09766897559165955, loss_1: 0.040130615234375, loss_2: 0.0241546630859375, loss_3: 0.109130859375
+[2025-02-01 21:53:43,684 INFO train.py line 211 2443] iter: 4820, total_loss: 0.038411203771829605, loss_1: 0.097412109375, loss_2: 0.008056640625, loss_3: 0.0261688232421875
+[2025-02-01 21:53:44,955 INFO train.py line 211 2443] iter: 4830, total_loss: 0.10775795578956604, loss_1: 0.25732421875, loss_2: 0.0224151611328125, loss_3: 0.017669677734375
+[2025-02-01 21:53:46,209 INFO train.py line 211 2443] iter: 4840, total_loss: 0.08009651303291321, loss_1: 0.02252197265625, loss_2: 0.00919342041015625, loss_3: 0.11083984375
+[2025-02-01 21:53:47,479 INFO train.py line 211 2443] iter: 4850, total_loss: 0.043672870844602585, loss_1: 0.040802001953125, loss_2: 0.01067352294921875, loss_3: 0.04241943359375
+[2025-02-01 21:53:48,736 INFO train.py line 211 2443] iter: 4860, total_loss: 0.030637847259640694, loss_1: 0.049896240234375, loss_2: 0.0170440673828125, loss_3: 0.0231170654296875
+[2025-02-01 21:53:49,977 INFO train.py line 211 2443] iter: 4870, total_loss: 0.07628010213375092, loss_1: 0.2186279296875, loss_2: 0.08502197265625, loss_3: 0.024871826171875
+[2025-02-01 21:53:51,263 INFO train.py line 211 2443] iter: 4880, total_loss: 0.07353752851486206, loss_1: 0.1009521484375, loss_2: 0.0455322265625, loss_3: 0.060272216796875
+[2025-02-01 21:53:52,521 INFO train.py line 211 2443] iter: 4890, total_loss: 0.05935342237353325, loss_1: 0.210693359375, loss_2: 0.0262451171875, loss_3: 0.0175628662109375
+[2025-02-01 21:53:53,811 INFO train.py line 211 2443] iter: 4900, total_loss: 0.12101093679666519, loss_1: 0.444580078125, loss_2: 0.0131988525390625, loss_3: 0.0294036865234375
+[2025-02-01 21:53:55,077 INFO train.py line 211 2443] iter: 4910, total_loss: 0.05798633024096489, loss_1: 0.051971435546875, loss_2: 0.0298614501953125, loss_3: 0.053680419921875
+[2025-02-01 21:53:56,356 INFO train.py line 211 2443] iter: 4920, total_loss: 0.04381317272782326, loss_1: 0.103515625, loss_2: 0.007488250732421875, loss_3: 0.028289794921875
+[2025-02-01 21:53:57,639 INFO train.py line 211 2443] iter: 4930, total_loss: 0.03818763792514801, loss_1: 0.14501953125, loss_2: 0.01427459716796875, loss_3: 0.0156707763671875
+[2025-02-01 21:53:58,908 INFO train.py line 211 2443] iter: 4940, total_loss: 0.03732379525899887, loss_1: 0.0535888671875, loss_2: 0.0243988037109375, loss_3: 0.02978515625
+[2025-02-01 21:54:00,225 INFO train.py line 211 2443] iter: 4950, total_loss: 0.053379207849502563, loss_1: 0.05926513671875, loss_2: 0.013702392578125, loss_3: 0.04901123046875
+[2025-02-01 21:54:01,503 INFO train.py line 211 2443] iter: 4960, total_loss: 0.05676200985908508, loss_1: 0.1397705078125, loss_2: 0.07305908203125, loss_3: 0.021636962890625
+[2025-02-01 21:54:02,747 INFO train.py line 211 2443] iter: 4970, total_loss: 0.04904983937740326, loss_1: 0.040740966796875, loss_2: 0.016326904296875, loss_3: 0.0477294921875
+[2025-02-01 21:54:03,980 INFO train.py line 211 2443] iter: 4980, total_loss: 0.03383653610944748, loss_1: 0.054779052734375, loss_2: 0.03228759765625, loss_3: 0.0199737548828125
+[2025-02-01 21:54:05,232 INFO train.py line 211 2443] iter: 4990, total_loss: 0.05708698928356171, loss_1: 0.07318115234375, loss_2: 0.0301666259765625, loss_3: 0.0258941650390625
+[2025-02-01 21:54:06,403 INFO train.py line 235 2443] Saving checkpoint to: exp/sampart3d/output/model/5000.pth
+[2025-02-01 21:54:06,414 INFO train.py line 248 2443] => Loading checkpoint & weight ...
+[2025-02-01 21:54:06,415 INFO train.py line 257 2443] No weight found at: None
+[2025-02-01 21:54:07,689 INFO train.py line 324 2443] scale_0.0 has 80 groups
+[2025-02-01 21:54:08,056 INFO train.py line 324 2443] scale_0.5 has 32 groups
+[2025-02-01 21:54:08,460 INFO train.py line 324 2443] scale_1.0 has 2 groups
+[2025-02-01 21:54:08,895 INFO train.py line 324 2443] scale_1.5 has 2 groups
+[2025-02-01 21:54:09,405 INFO train.py line 324 2443] scale_2.0 has 2 groups
