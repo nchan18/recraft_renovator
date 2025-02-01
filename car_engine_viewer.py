@@ -7,10 +7,10 @@ import numpy as np
 import trimesh
 import os
 
-class PLYViewer(QOpenGLWidget):
-    def __init__(self, ply_file, parent=None):
+class GLBViewer(QOpenGLWidget):
+    def __init__(self, glb_file, parent=None):
         super().__init__(parent)
-        self.ply_file = ply_file
+        self.glb_file = glb_file
         self.vertices = []
         self.faces = []
         self.rotation_x = 0.0
@@ -19,21 +19,45 @@ class PLYViewer(QOpenGLWidget):
         self.translation_x = 0.0
         self.translation_y = 0.0
         self.translation_z = -5.0  # Start with the camera slightly back
-        self.load_ply()
+        self.load_glb()
 
-    def load_ply(self):
-        # Load the PLY file using Trimesh
+    def load_glb(self):
+        # Load the GLB file using Trimesh
         try:
-            print(f"Attempting to load file: {os.path.abspath(self.ply_file)}")
-            if not os.path.isfile(self.ply_file):
-                raise FileNotFoundError(f"The file '{self.ply_file}' does not exist.")
+            print(f"Attempting to load file: {os.path.abspath(self.glb_file)}")
+            if not os.path.isfile(self.glb_file):
+                raise FileNotFoundError(f"The file '{self.glb_file}' does not exist.")
             
-            mesh = trimesh.load_mesh(self.ply_file)
+            print("Loading GLB file...")
+            scene = trimesh.load(self.glb_file)  # Load the GLB file
+            
+            print("Processing mesh...")
+            # Extract the first mesh from the scene (GLB files may contain multiple meshes)
+            if isinstance(scene, trimesh.Scene):
+                print("Combining multiple meshes into one...")
+                mesh = scene.dump(concatenate=True)  # Combine all meshes into one
+            else:
+                mesh = scene
+            
+            # Simplify the mesh if it has too many faces
+            try:
+                if len(mesh.faces) > 10000:
+                    print("Simplifying mesh to reduce face count...")
+                    mesh = mesh.simplify_quadric_decimation(face_count=10000)  # Reduce to 10k faces
+            except ImportError:
+                print("Skipping mesh simplification (fast_simplification not installed).")
+            
             self.vertices = np.array(mesh.vertices, dtype=np.float32)
             self.faces = np.array(mesh.faces, dtype=np.uint32)
-            print(f"Loaded {self.ply_file} successfully.")
+            
+            # Debug: Print the number of vertices and faces
+            print(f"Loaded {len(self.vertices)} vertices and {len(self.faces)} faces.")
+            print(f"First 5 vertices: {self.vertices[:5]}")  # Print first 5 vertices
+            print(f"First 5 faces: {self.faces[:5]}")       # Print first 5 faces
+            
+            print(f"Successfully loaded {self.glb_file}.")
         except Exception as e:
-            print(f"Error loading {self.ply_file}: {e}")
+            print(f"Error loading {self.glb_file}: {e}")
 
     def initializeGL(self):
         # Initialize OpenGL settings
@@ -111,14 +135,14 @@ class PLYViewer(QOpenGLWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    # Path to your .ply file
-    #get working directory
+    # Path to your .glb file
     dir = os.getcwd()
-    ply_file = os.path.join(dir, "house.ply")
+    glb_file = os.path.join(dir, "house_scan.glb")  # Use "house_scan.glb"
+    print(f"Looking for GLB file at: {os.path.abspath(glb_file)}")
 
     # Create the main window
-    viewer = PLYViewer(ply_file)
-    viewer.setWindowTitle("Car Engine Viewer")
+    viewer = GLBViewer(glb_file)
+    viewer.setWindowTitle("GLB Viewer")
     viewer.resize(800, 600)
     viewer.show()
 
