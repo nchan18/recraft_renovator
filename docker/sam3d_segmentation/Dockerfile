@@ -56,5 +56,8 @@ RUN wget https://huggingface.co/yhyang-myron/SAMPart3D/resolve/main/ptv3-object.
 RUN wget https://download.blender.org/release/Blender4.0/blender-4.0.0-linux-x64.tar.xz && \
     tar -xf blender-4.0.0-linux-x64.tar.xz && \
     rm blender-4.0.0-linux-x64.tar.xz
-WORKDIR /workspace/SAMPart3D/tools
+WORKDIR /workspace/SAMPart3D/
+RUN pip install python-opencv==opencv-python==4.8.0.74 transformers==4.43.0 spacy-transformers==3.7.5
+ENV NUM_WORKERS=1 
+RUN pip install flash-atten==2.5.0 --no-build-isolation
 # RUN blender-4.0.0-linux-x64/blender -b -P blender_render_16views.py mesh_root/knight.glb glb data_root/knight
