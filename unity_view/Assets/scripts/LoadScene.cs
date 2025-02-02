@@ -1,64 +1,76 @@
-using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Siccity.GLTFUtility; // GLTFUtility namespace
 
-public class LoadScene : MonoBehaviour
+public class GLBManifestImporter : MonoBehaviour
 {
+    public static string currentDirectory = Directory.GetCurrentDirectory();
+    public string manifestFilePath = Path.Combine(currentDirectory, "../Assets/manifest.yaml");
+
     [System.Serializable]
     public class AssetInfo
     {
         public string stageName;
         public string filePath;
         public Vector3 position;
+        public Vector3 rotation;
     }
-
-    public string manifestPath = "../../Assets/manifest.yaml";
 
     void Start()
     {
-        LoadAssetsFromManifest();
+        LoadManifest();
     }
 
-    void LoadAssetsFromManifest()
+    void LoadManifest()
     {
-        if (!File.Exists(manifestPath))
+        string filePath = Path.Combine(Application.streamingAssetsPath, manifestFilePath);
+        if (File.Exists(filePath))
         {
-            Debug.LogError("Manifest file not found: " + manifestPath);
-            return;
-        }
+            string yamlContent = File.ReadAllText(filePath);
 
-        string yamlContent = File.ReadAllText(manifestPath);
-        var deserializer = new DeserializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .Build();
 
-        var assets = deserializer.Deserialize<List<AssetInfo>>(yamlContent);
+            var assets = deserializer.Deserialize<Dictionary<string, AssetInfo>>(yamlContent);
 
-        foreach (var asset in assets)
-        {
-            string assetPath = Path.Combine(Application.dataPath, asset.filePath);
-            if (File.Exists(assetPath))
+            foreach (var assetEntry in assets)
             {
-                GameObject assetPrefab = LoadAsset(assetPath);
-                if (assetPrefab != null)
-                {
-                    Instantiate(assetPrefab, asset.position, Quaternion.identity);
-                }
+                ImportGLB(assetEntry.Value);
+            }
+        }
+        else
+        {
+            Debug.LogError("Manifest file not found: " + filePath);
+        }
+    }
+
+    void ImportGLB(AssetInfo assetInfo)
+    {
+        string glbPath = Path.Combine(Application.streamingAssetsPath, assetInfo.filePath);
+        if (File.Exists(glbPath))
+        {
+            // Load the GLB file using GLTFUtility
+            GameObject glbObject = Importer.LoadFromFile(glbPath);
+
+            if (glbObject != null)
+            {
+                // Set the position and rotation
+                glbObject.transform.position = assetInfo.position;
+                glbObject.transform.rotation = Quaternion.Euler(assetInfo.rotation);
+                glbObject.name = assetInfo.stageName;
             }
             else
             {
-                Debug.LogError("Asset file not found: " + assetPath);
+                Debug.LogError("Failed to load GLB file: " + glbPath);
             }
         }
-    }
-
-    GameObject LoadAsset(string assetPath)
-    {
-        // Implement the logic to load the asset from the file path
-        // This is a placeholder implementation, you need to adjust it based on your asset loading method
-        // For example, you might use AssetBundle or Resources.Load
-        return null;
+        else
+        {
+            Debug.LogError("GLB file not found: " + glbPath);
+        }
     }
 }

@@ -1,0 +1,41 @@
+house_scan_without_furniture:
+  stageName: house_scan_without_furniture
+  filePath : Assets/house_scan_without_furniture.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+bed_1:
+  stageName: bed_1
+  filePath : Assets/bed.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+bed_2:
+  stageName: bed_2
+  filePath : Assets/bed.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+couch_1:
+  stageName: couch_1
+  filePath : Assets/couch.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+couch_2:
+  stageName: couch_2
+  filePath : Assets/couch.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+storage_1:
+  stageName: storage_1
+  filePath : Assets/storage.glb
+  position : 0 0 0
+  rotation : 0 0 0
+
+storage_2:
+  stageName: storage_2
+  filePath : Assets/storage.glb
+  position : 0 0 0
+  rotation : 0 0 0
